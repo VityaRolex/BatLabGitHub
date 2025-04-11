@@ -1,5 +1,10 @@
 #include <iostream>
 
+int32_t max(int32_t a, int32_t b)
+{
+    return a > b ? a : b;
+}
+
 
 char returnSign(double number)
 {
@@ -111,4 +116,28 @@ void outputGornerScheme(double * arr,int32_t lenght)
             std::cout << ")x ";
         }
     }
+}
+
+
+void subtractMnogs(double * mnog1, int32_t lenght1,  double * mnog2, int32_t lenght2, double * mnog3)
+{
+    reverseArray(mnog1, lenght1);
+    reverseArray(mnog2, lenght2);
+    for (int32_t i = 0; i < lenght1; ++i)
+    {
+        mnog3[i] += mnog1[i];
+    }
+    for (int32_t i = 0; i < lenght2; ++i)
+    {
+        mnog3[i] -= mnog2[i];
+    }
+    reverseArray(mnog3, max(lenght1,lenght2));
+}
+
+
+void devideMnogs(double * mnog1, int32_t lenght1, double * mnog2, int32_t lenght2, double * mnog3)
+{
+    double * res[lenght1]{};
+    double * ost[lenght2]{};
+    
 }
