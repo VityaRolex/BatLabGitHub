@@ -150,3 +150,17 @@ void makeCycleMovement (Type ** arr, int32_t rows, int32_t cols)
     }
 
 }
+
+
+
+
+template <typename Type>
+void DoSmthPoUlitke(Type **& mtr, int32_t rows, int32_t cols, void (*func)(Type&))
+{
+    int32_t i{};
+    int32_t j{};
+    while (true)
+    {
+        
+    }
+}
