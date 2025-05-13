@@ -1,5 +1,31 @@
 #include <iostream>
-#include "mylib.h"
+#include <iomanip>
+
+
+template<typename Type> 
+void PrintMatrix(Type **& mtr, int rows, int cols, int width)
+{
+    for (int32_t i = 0; i < rows; ++i)
+    {
+        for (int32_t j = 0; j < cols; ++j)
+        {
+            std::cout << std::setw(width) << mtr[i][j] << ' ';
+        }
+        std::cout << '\n';
+    }
+}
+
+
+template<typename Type>
+void createMatrix(Type **& mtr, int rows, int cols)
+{
+    mtr = new Type * [rows];
+    for (int32_t i = 0; i < rows; ++i)
+    {
+        mtr[i] = new Type [cols];
+    }
+}
+
 
 int returnNumberOfANonNegativeCol(int ** mtr, int rows, int cols)
 {
@@ -23,12 +49,34 @@ int returnNumberOfANonNegativeCol(int ** mtr, int rows, int cols)
 
 void SpiralkaFromCenter(int **& mtr, int n)
 {
-    std::cout << mtr[n/2][n/2];
-    for (int i = 0; i < (n + 1)/2; ++i)
+    int temp_row{(n-1)/2};
+    int temp_col{(n-1)/2};
+    std::cout << mtr[temp_row][temp_col] << ' ';
+    for (int k = 1; k <= (n - 1)/2; ++k)
     {
-        for (int32_t j = 0; j < i; ++j)
+        --temp_row;
+        std::cout << mtr[temp_row][temp_col] << ' ';
+        for (int i = 0; i < 2*k - 1; ++i)
         {
-            std::cout << 
+            --temp_col; 
+            std::cout << mtr[temp_row][temp_col] << ' ';
+        }
+        for (int i = 0; i < 2*k; ++i)
+        {
+            ++temp_row; 
+            std::cout << mtr[temp_row][temp_col] << ' ';
+        }
+        for (int i = 0; i < 2*k; ++i)
+        {
+            ++temp_col; 
+            std::cout << mtr[temp_row][temp_col] << ' ';
+        }
+        for (int i = 0; i < 2*k; ++i)
+        {
+            --temp_row; 
+            std::cout << mtr[temp_row][temp_col] << ' ';
         }
     }
 }
+
+
