@@ -80,3 +80,71 @@ void SpiralkaFromCenter(int **& mtr, int n)
 }
 
 
+double** AverageMatrix(int ** mtr, int n)
+{
+    double** res_mtr{};
+    int counter_of_neighbors{8};
+    int flag{};
+    createMatrix(res_mtr, n, n);
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            if (i == 0 || i == n - 1)
+            {
+                ++flag;
+            }
+            if (j == 0 || j == n - 1)
+            {
+                ++flag;
+            }
+            if (flag == 1)
+            {
+                counter_of_neighbors -= 3;
+            }
+            else if (flag == 2)
+            {
+                counter_of_neighbors -= 5;
+            }
+            res_mtr[i][j] = 1.0*(((j > 0 && i > 0) ? mtr[i-1][j-1] : 0) + ((i > 0) ? mtr[i-1][j] : 0) + ((i > 0 && j < n - 1) ? mtr[i-1][j+1] : 0) + ((j > 0) ? mtr[i][j-1] : 0) + ((j < n - 1) ? mtr[i][j+1] : 0) + ((i < n - 1 && j > 0) ? mtr[i+1][j-1] : 0) + ((i < n - 1)? mtr[i+1][j] : 0) + ((i < n - 1 && j < n - 1) ? mtr[i+1][j+1] : 0)) / counter_of_neighbors;
+            counter_of_neighbors = 8;
+            flag = 0;
+        }
+    }
+    return res_mtr;
+}
+
+
+void catchMaxNegElem(double ** mtr, int n)
+{
+    int row{-1};
+    int col{};
+    double value{0};
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            if (mtr[i][j] < 0)
+            {
+                if ( row == -1)
+                {
+                    value = mtr[i][j];
+                    row = i;
+                    col = j;
+                }
+                else if(mtr[i][j] > value)
+                {
+                    value = mtr[i][j];
+                    row = i;
+                    col = j;
+                }
+            }
+            
+        }
+    }
+    if (row == -1)
+    {
+        throw "mtr doesn't contain negative elements";
+    }
+    std::cout << "Max negative element is " << value << " and it is in the " << row+1 << " row and the " << col+1 << " column \n";
+}
