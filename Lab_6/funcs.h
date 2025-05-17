@@ -20,8 +20,6 @@ void sortNumberWords(char * str)
     char * arr[n]{};
     bool gran[n]{};
     int counter_of_number_words{};
-    int j = 0;
-    bool flag = 1;
     for(int i = 0; i < n - 1; ++i)
     {
         if ((str[i] <= '9' && str[i] >= '0' && str[i + 1] == ' ') || (str[i + 1] <= '9' && str[i + 1] >= '0' && str[i] == ' '))
@@ -66,27 +64,19 @@ void sortNumberWords(char * str)
         {
             break;
         }
-        if (atoi(arr[i]) != 0)
-        {
-            arr_of_numberic_idx[posIndex++] = i;
-            ++count_of_indexes;
-        }
-        else
-        {
-            for (int j = 0; j < strlen(arr[i]); ++j)
-            {
-                if (arr[i][j] !='0')
-                {
-                    break;
-                }
-                if (j == strlen(arr[i]) - 1)
-                {
-                    arr_of_numberic_idx[posIndex++] = i;
-                    ++count_of_indexes;
-                }
-            }
 
-        }
+        for (int j = 0; j < strlen(arr[i]); ++j)
+        {
+            if (arr[i][j] <'0' || arr[i][j] > '9')
+            {
+                break;
+            }
+            if (j == strlen(arr[i]) - 1)
+            {
+                arr_of_numberic_idx[posIndex++] = i;
+                ++count_of_indexes;
+            }
+         }
         
     }
     posIndex = 0;
