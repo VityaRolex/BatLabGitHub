@@ -3,10 +3,10 @@
 #include <cstdlib>
 #include <stdexcept>
 
-struct Word
+struct DoubleNumber
 {
     int i = 0;
-    char word [256]{};
+    int val = 0;
 };
 
 
@@ -27,9 +27,15 @@ void makeArr(char **& arr, int  &length)
 }
 
 
-void sort(Word * arr,)
+int compareElems(const void * elem1, const void * elem2)
 {
-    
+    return ((*((DoubleNumber*)elem1)).val) - ((*((DoubleNumber*)elem2)).val);
+}
+
+
+void sort(DoubleNumber * arr, int length)
+{
+    qsort(arr,length, sizeof(DoubleNumber), compareElems);
 }
 
 int returnMaxOfArr(int * arr, int length)
@@ -69,9 +75,12 @@ int returnSumOfArr(int * arr, int length)
     return res;
 }
 
+
+
+
 void Task1(char **& arr, int length)
 {
-    Word words[length];
+    DoubleNumber numbers[length];
     int arr_of_nums[length]{};
     std::cin.ignore();
     for (int i = 0; i < length; ++i)
@@ -79,17 +88,18 @@ void Task1(char **& arr, int length)
         std::cout << "Input Word number " << i+1 << '\n';
         std::cin.getline(arr[i], 256);
         arr_of_nums[i] = atoi(strpbrk(arr[i], " ")+1);
+        numbers[i].i = i;
+        numbers[i].val = arr_of_nums[i];
     }
-    for (int i = 0; i < length; ++i)
-    {
-        words[i].i = arr_of_nums[i];
-        words[i].word = arr[i];
-    }
-    sort(words, length);
+    
+
+    sort(numbers, length);
+
+
     std::cout << '\n';
     for (int i = 0; i < length; ++i)
     {
-        std::cout << arr[i] << '\n';
+        std::cout <<  arr[numbers[i].i] << '\n';
     }
     
     std::cout << "Sum: " << returnSumOfArr(arr_of_nums, length) << '\n';
