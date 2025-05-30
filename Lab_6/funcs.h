@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <exception>
 
 int returnSumOfDigits(int number)
 {
@@ -20,6 +21,14 @@ void sortNumberWords(char * str)
     char * arr[n]{};
     bool gran[n]{};
     int counter_of_number_words{};
+    int posIndex{};
+
+    if (n==1)
+    {
+        throw (std::invalid_argument("String must be non void"));
+    }
+
+    
     for(int i = 0; i < n - 1; ++i)
     {
         if ((str[i] <= '9' && str[i] >= '0' && str[i + 1] == ' ') || (str[i + 1] <= '9' && str[i + 1] >= '0' && str[i] == ' '))
@@ -27,7 +36,6 @@ void sortNumberWords(char * str)
             gran[i] = true;
         }
     }
-    int posIndex{};
     for (int i = 0; i < 2*n; ++i)
     {      
         if (posIndex >= strlen(str))
