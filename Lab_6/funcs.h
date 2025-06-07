@@ -14,10 +14,14 @@ int returnSumOfDigits(int number)
 }
 
 
+
+
+
+
 void sortNumberWords(char * str)
 {
     const int n{strlen(str) + 1};
-    char temp_str[2*n]{};
+    char temp_str[2 * n]{};
     char * arr[n]{};
     bool gran[n]{};
     int counter_of_number_words{};
@@ -36,7 +40,7 @@ void sortNumberWords(char * str)
             gran[i] = true;
         }
     }
-    for (int i = 0; i < 2*n; ++i)
+    for (int i = 0; i < 2 * n; ++i)
     {      
         if (posIndex >= strlen(str))
         {
