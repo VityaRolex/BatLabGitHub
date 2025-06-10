@@ -11,6 +11,39 @@ struct Student
 };
 
 
+void copyArr(Student * arr, int length, Student *& temp_arr)
+{
+    temp_arr = new Student[length];
+    for (int i = 0; i < length; ++i)
+    {
+        strcpy(temp_arr[i].name, arr[i].name);
+        temp_arr[i].group = arr[i].group;
+        temp_arr[i].grade = arr[i].grade;
+    }
+}
+
+void inputIntegerValue(int & element)
+{
+    double cinTemp{};
+    std::cin >> cinTemp;
+    while (std::cin.fail() || cinTemp - static_cast<int32_t>(cinTemp) != 0)
+ {
+    if(cinTemp - static_cast<int>(cinTemp) != 0)
+    {
+        std::cout << "it's very funny, and now enter INTEGER value \n";
+    }
+    if (std::cin.fail() || element > 5 || element <= 0)
+    {
+    std::cout << "It's not funny, be more serious and try again \n";
+    std::cin.clear();
+    std::cin.ignore();
+    }
+    std::cin >> cinTemp;
+  }
+  element = cinTemp;
+}
+
+
 void makeStudArr(Student *& arr, std::fstream & in, int& count_of_studs)
 {
     std::string str;
@@ -45,15 +78,18 @@ void SortArr(Student * arr, int length)
 
 void searchStud(Student *arr, int length)
 {
+    char temp_str[30]{};
     char str[30]{};
     std::cin >> str;
     for (int i = 0; i < length; ++i)
     {
-        if (str == arr[i].name)
+        strcpy(temp_str, arr[i].name);
+        if (strcmp(str,strtok(temp_str, " ")) == 0)
         {
-            std::cout << arr[i].name << ' ' << arr[i].group << ' '  << arr[i].grade;  
+            std::cout << arr[i].name << ' ' << arr[i].group << ' '  << arr[i].grade << '\n';  
             return;    
         }
+        strcpy(temp_str, "");
     }
     std::cout << "There isn't stud with this surname";
 }
@@ -83,27 +119,27 @@ void sortByGroup(Student * arr, int length)
 void AverageMarkOfGroups(Student * arr, int length)
 {
     double temp_grade{};
-    int temp_group{arr[0].group};
+    int temp_group{};
     int count{};
     int k{};
-    while (k != length - 1)
+    while (k != length)
     {
-        if(arr[k].group != temp_group || k == length - 2)
+        temp_group = arr[k].group;
+        count += 1;
+        temp_grade +=arr[k].grade;
+        if (arr[k+1].group != temp_group || k == length - 1)
         {
-            std::cout << temp_grade/count;
-            
-        }
-        else 
-        {
-            temp_grade += arr[k].grade;
-            ++count;
-        }
+            std::cout << "Average of group number " << temp_group << " is " << temp_grade/count << '\n';
+            count = 0;
+            temp_grade = 0;
         }
         ++k;
+    }
+       
 }
 
 
-void outputInFile(Student * arr, int length, std::ofstream &fout)
+void outputInFile(Student * arr, int length, std::ostream &fout)
 {
     for (int i = 0; i < length; ++i)
     {
