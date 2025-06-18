@@ -1,0 +1,181 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cmath>
+
+
+struct Student
+{
+    std::string name;
+    std::string surname;
+    int course;
+    std::string groupe;
+    int marks[5];
+};
+
+
+int sumOfArr(int * arr, int n)
+{
+    int res{};
+    for (int i = 0; i < n; ++i)
+    {
+        res += arr[i];
+    }
+    return res;
+}
+
+
+double averageOfArr(int * arr, int n)
+{
+    return 1.0*sumOfArr(arr, n) / n;
+}
+
+
+int compStuds(const void * stud1, const void * stud2)
+{
+    return averageOfArr(((Student *)stud2) -> marks, 5) - averageOfArr(((Student *)stud1) -> marks, 5);
+}
+
+
+void sortStuds(Student * arr, int n)
+{
+    qsort(arr, n, sizeof(Student), compStuds);
+}
+
+
+
+bool func_of_increase(double num1, double num2)
+{
+    return num1 < num2 ? 1:0;
+}
+
+bool func_of_decrease(double num1, double num2)
+{
+    return num1 > num2 ? 1:0;
+}
+
+void MergeTwoSortedArrs(double * res, double *arr1, double * arr2, int length1, int length2, bool (*func_of_comp)(double, double))
+{
+    int k{};
+    int j{};
+    int i{};
+    while (i < length1 && j < length2)
+    {
+        if(func_of_comp(arr1[i],arr2[j]))
+        {
+            res[k++] = arr1[i++];
+        }
+        else 
+        {
+            res[k++] = arr2[j++];
+        }
+    }
+    if (i != length1)
+    {
+        for (; i < length1;)
+        {
+            res[k++] = arr1[i++];
+        }
+    }
+    if (j != length2)
+    {
+        for (; j < length2;)
+        {
+            res[k++] = arr2[j++];
+        }
+    }
+    for (int i = 0; i < length1 + length2; ++i)
+    {
+        arr1[i] = res[i];
+    }
+}
+
+
+void mergeSort(double * res, double * subarr1, int length1, bool (*func_of_comp)(double, double), int length2 = 0, double * subarr2 = nullptr)
+{
+    if(length1 != 1 && length2 != 1)
+    {
+        
+        mergeSort(res, subarr1, length1/2, func_of_comp, length1 - length1/2, subarr1 + length1/2);
+        if (length2 != 0)
+        {
+            mergeSort(res, subarr2,length2/2, func_of_comp, length2 - length2/2, subarr2 + length2/2);
+        }
+    }
+    if (length1 == 2)
+        {
+            if (!func_of_comp(subarr1[0], subarr1[1]))
+            {
+                std::swap(subarr1[0], subarr1[1]);
+            }
+        }
+        if (length2 == 2)
+        {
+        if (!func_of_comp(subarr2[0], subarr2[1]))
+            {
+                std::swap(subarr2[0], subarr2[1]);
+            }
+        }
+    MergeTwoSortedArrs(res, subarr1, subarr2, length1, length2, func_of_comp);
+    return;
+}   
+
+
+void MergeSort(double *arr, int length, bool (*func_of_comp)(double, double))
+{
+    double* res = new double [length];
+    mergeSort(res, arr, length, func_of_comp);
+    delete [] res;
+}
+
+
+
+void insertSort(double * arr, int length, bool (*func_of_comp)(double, double))
+{
+    double * res = new double [length];
+    for (int i = 1; i <= length; ++i)
+    {
+        MergeTwoSortedArrs(res, arr, arr + i, i, 1, func_of_comp);
+    }
+    delete [] res;
+}
+
+
+size_t returnIdxOfEdgeElem(double * arr, int length, bool (*func_of_comp)(double, double))
+{
+    double temp{arr[0]};
+    size_t idx{};
+    for (int i = 0; i < length; ++i)
+    {
+        if (func_of_comp(arr[i], temp))
+        {
+            idx = i;
+            temp = arr[i];
+        }
+    }
+    return idx;
+}
+
+
+void selectionSort(double *arr, int length, bool (*func_of_comp)(double, double))
+{
+    for (int i = 0; i < length; ++i)
+    {
+        std::swap(arr[i], arr[i + returnIdxOfEdgeElem(arr + i, length - i, func_of_comp)]);
+    }
+}
+
+
+int countDigits(double number, int accuracy)
+{
+    int counter{};
+    number = std::abs(number);
+    for (int i = 0; i <accuracy; ++i)
+    {
+        if ((number * pow(10, i) - static_cast<int>(number * pow(10,i))) / pow(10,i) > (pow(10, -1*accuracy)))
+        {
+            ++counter;
+        }
+    }
+    return counter;
+}
