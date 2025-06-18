@@ -179,3 +179,77 @@ int countDigits(double number, int accuracy)
     }
     return counter;
 }
+
+
+int compareElems(const void * elem1, const void * elem2)
+{
+    return countDigits(*(double*)elem2, 10) - countDigits(*(double*)elem1, 10);
+}
+
+
+void Qsort(double *arr, int length)
+{
+    qsort(arr, length, sizeof(double), compareElems);
+}
+
+
+void QuickSort(double * arr, int length, bool (*func_of_comp)(double, double))
+{
+    double pivot = arr[length / 2];
+    int length1{};
+    int length2{};
+    int length3{};
+    double * left_arr = new double [length];
+    double * mid_arr = new double [length];
+    double * right_arr = new double [length];
+    for (int i = 0; i < length; ++i)
+    {
+        if (func_of_comp(arr[i], pivot))
+        {
+            left_arr[length1] = arr[i];
+            ++length1;
+        }
+        else if (arr[i] == pivot)
+        {
+            mid_arr[length2] = arr[i];
+            ++length2;
+        }
+        else
+        {
+            right_arr[length3] = arr[i];
+            ++length3;
+        }
+    }
+    if (length1 > 1)
+    {
+        QuickSort(left_arr, length1, func_of_comp);
+    }
+    if (length3 > 1)
+    {
+        QuickSort(right_arr, length3, func_of_comp);
+    }
+    int i = 0;
+    for (int j = 0; j < length1; ++j)
+    {
+        arr[i] = left_arr[j];
+        ++i;
+    }
+    for (int j = 0; j < length2; ++j)
+    {
+       arr[i] = mid_arr[j];
+        ++i;
+    }
+    for (int j = 0; j < length3; ++j)
+    {
+        arr[i] = right_arr[j];
+        ++i;
+    }
+}
+
+
+void ModBubbleSort(double * arr, int length, bool (*func_of_comp)(double, double))
+{
+    int i{};
+    int j{};
+    
+}
