@@ -31,17 +31,23 @@ double averageOfArr(int * arr, int n)
 }
 
 
-int compStuds(const void * stud1, const void * stud2)
+void sortStuds(Student * arr, int length)
 {
-    return averageOfArr(((Student *)stud2) -> marks, 5) - averageOfArr(((Student *)stud1) -> marks, 5);
+    int i{};
+    while (i != length - 1)
+    {
+        if (averageOfArr(arr[i].marks, 5) < averageOfArr(arr[i + 1].marks, 5))
+        {
+            std::swap(arr[i], arr[i+1]);
+            i = 0;
+        }
+        else
+        {
+            ++i;
+        }
+    }
+    
 }
-
-
-void sortStuds(Student * arr, int n)
-{
-    qsort(arr, n, sizeof(Student), compStuds);
-}
-
 
 
 bool func_of_increase(double num1, double num2)
@@ -49,10 +55,12 @@ bool func_of_increase(double num1, double num2)
     return num1 < num2 ? 1:0;
 }
 
+
 bool func_of_decrease(double num1, double num2)
 {
     return num1 > num2 ? 1:0;
 }
+
 
 void MergeTwoSortedArrs(double * res, double *arr1, double * arr2, int length1, int length2, bool (*func_of_comp)(double, double))
 {
@@ -127,7 +135,6 @@ void MergeSort(double *arr, int length, bool (*func_of_comp)(double, double))
     mergeSort(res, arr, length, func_of_comp);
     delete [] res;
 }
-
 
 
 void insertSort(double * arr, int length, bool (*func_of_comp)(double, double))
@@ -323,6 +330,7 @@ void output(std::ostream & out, double * arr, int length)
     {
         out << arr[i] << ' ';
     }
+    std::cout << '\n';
 }
 
 
@@ -332,5 +340,42 @@ void inputIntWithLimits(int & num, int left, int right)
     {
         std::cout << "input number between " << left << " and " << right << '\n';
         std::cin >> num;
+    }
+}
+
+
+void inputStudentsArr(Student *& arr, int &length)
+{
+    std::cout << "input count of students \n";
+    std::cin >> length;
+    while (length <= 0)
+    {
+        std::cout << "input positive number";
+        std::cin >> length;
+    }
+    arr = new Student [length];
+    
+    for (int i = 0; i < length; ++i)
+    {
+        std::cin.ignore();
+        std::cout << i+1 << "th student: \n input name \n";
+        getline(std::cin, arr[i].name);
+        std::cout << "input sutname \n";
+        getline(std::cin, arr[i].surname);
+        std::cout << "input course \n";
+        std::cin >> arr[i].course;
+        std::cin.ignore();
+        std::cout << "input groupe \n";
+        getline(std::cin, arr[i].groupe);
+        std::cout << "input 5 marks \n";
+        std::cin >> arr[i].marks[0] >> arr[i].marks[1] >> arr[i].marks[2] >> arr[i].marks[3] >> arr[i].marks[4];
+    }
+}
+
+void outputArrOfStuds(std::ostream & out, Student * arr, int length)
+{
+    for (int i = 0; i < length; ++i)
+    {
+        out << arr[i].name << ';' << arr[i].surname << ';' << arr[i].course << ';' << arr[i].groupe << ';' << arr[i].marks[0] << ' ' << arr[i].marks[1]  << ' ' << arr[i].marks[2] << ' ' << arr[i].marks[3] << ' ' << arr[i].marks[4] << '\n'; 
     }
 }

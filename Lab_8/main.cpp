@@ -8,12 +8,12 @@ int main()
 {
     std::ifstream fin("input.txt");
     std::ofstream fout("output.txt");
+    Student * arr_of_studs{};
+    int stud_length{};
     bool (*func_of_comp)(double, double){};
     double * arr{};
     int length{};
     int switcher{};
-
-
     std::cout << "Input 1 if you want to input numbers from the command line and 2 if you want to input numbers from file \n"; 
     inputIntWithLimits(switcher, 1, 2);
     switch (switcher)
@@ -98,5 +98,10 @@ int main()
             output(std::cout, arr, length);
         }
     }
+
+
+    inputStudentsArr(arr_of_studs, stud_length);
+    sortStuds(arr_of_studs, stud_length);
+    outputArrOfStuds(fout, arr_of_studs, stud_length);
     return 0;
 }
