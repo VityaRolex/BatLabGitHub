@@ -103,5 +103,6 @@ int main()
     inputStudentsArr(arr_of_studs, stud_length);
     sortStuds(arr_of_studs, stud_length);
     outputArrOfStuds(fout, arr_of_studs, stud_length);
+    outputArrOfStuds(std::cout, arr_of_studs, stud_length);
     return 0;
 }
