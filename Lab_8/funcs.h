@@ -250,6 +250,87 @@ void QuickSort(double * arr, int length, bool (*func_of_comp)(double, double))
 void ModBubbleSort(double * arr, int length, bool (*func_of_comp)(double, double))
 {
     int i{};
-    int j{};
-    
+    int j{length - 1};
+    while (i!= length - 1 || j != 0)
+    {
+        if (i!= length - 1)
+        {
+            if (!func_of_comp(arr[i], arr[i+1]))
+            {
+                std::swap(arr[i], arr[i+1]);
+                i = 0;
+            }
+            else
+            {
+                i += 1;
+            }
+        }
+        if (j != 0)
+        {
+            if (func_of_comp(arr[j], arr[j - 1]))
+            {
+                std::swap(arr[j], arr[j - 1]);
+                j = length - 1;
+            }
+            else
+            {
+                j -= 1;
+            }
+        }
+    }
+}
+
+
+void CLInput(double *& arr, int& length)
+{
+    std::cout << "input count of numbers \n";
+    std::cin >> length;
+    while (length <= 0)
+    {
+        std::cout << "input positive number";
+        std::cin >> length;
+    }
+    arr = new double [length];
+    for (int i = 0; i < length; ++i)
+    {
+        std::cout << "input " << i+1 << "th number \n";
+        std::cin >> arr[i];
+    }
+}
+
+
+void fileInput(std::ifstream & fin, double *& arr, int & length)
+{
+    double * temp = new double;
+    while (fin >> *temp)
+    {
+        ++length;
+    }
+    delete temp;
+    fin.clear();
+    fin.seekg(std::ios::beg);
+    arr = new double [length];
+    for(int i = 0; i < length; ++i)
+    {
+        fin >> arr[i];
+    }
+}
+
+
+void output(std::ostream & out, double * arr, int length)
+{
+    for (int i = 0; i < length; ++i)
+    {
+        out << arr[i] << ' ';
+    }
+}
+
+
+void inputIntWithLimits(int & num, int left, int right)
+{
+    while(num < left || num > right)
+    {
+        std::cout << "input number between " << left << " and " << right << '\n';
+        std::cin >> num;
+    }
 }
