@@ -1,0 +1,142 @@
+class Drobi:
+    chisl = 0
+    znamen = 1
+    def decF(self):
+        return self.chisl/self.znamen
+    def printF(self):
+        if self.znamen == 1:
+            return str(self.chisl)
+        else:
+            return str(self.chisl) + '/' + str(self.znamen)
+    def checkDrob(self):
+        if self.znamen < 0:
+            self.znamen *= -1
+            self.chisl *= -1
+    def __init__(self, value1, value2):
+            self.chisl = value1
+            self.znamen = value2
+    def OptimizeDrob(self):
+        for n in range(self.znamen, 1, -1):
+            if self.znamen % n == 0 and self.chisl % n == 0:
+                self.znamen = self.znamen//n
+                self.chisl = self.chisl//n
+    
+
+
+
+
+
+def Add(a, b):
+   result = Drobi(a.chisl * b.znamen + a.znamen * b.chisl, a.znamen * b.znamen)
+   result.OptimizeDrob()
+   return result
+
+def Subtr(a,b):
+    bTmp = Drobi(-1*b.chisl, b.znamen)
+    result = Drobi(0,1)
+    result = Add(a, bTmp)
+    return result
+
+
+def Multi(a,b):
+    result = Drobi(a.chisl*b.chisl, a.znamen*b.znamen)
+    result.OptimizeDrob()
+    return result
+
+
+def Divi(a,b):
+    bTmp = Drobi(b.znamen, b.chisl)
+    result = Drobi(0,1)
+    bTmp.checkDrob()
+    result = Multi(a, bTmp)
+    return result
+    
+
+
+def makeNumberFromStr(str):
+    res = 1
+    i = 0
+    if str[0] == '-':
+        res = -1
+        str = str[1:]
+    
+    while i < len(str) and str[i] >= '0' and str[i] <= '9':
+        i+=1
+    res = res * int(str[0:i])
+    return res
+
+
+def deleteTrashSymbs(str):
+    i = 0
+    while i < len(str) and ((str[i] > '9' or str[i] < '0') and (str[i] != '-' or (str[i+1] > '9' or str[i+1] < '0'))):
+        i += 1
+    res = str[i:]
+    return res
+
+
+def NextNumTransfer(str):
+    res = deleteTrashSymbs(str)
+    i = 0
+    while res[i] >= '0' and res[i] <= '9':
+        i += 1
+        if i == len(str):
+            return ''
+    res = res[i:]
+    res = deleteTrashSymbs(res)
+    return res
+
+
+def firstNonNumbericSymb(str):
+    i = 0
+    while str[i] <= '9' and str[i] >= '0' or str[i] == ' ':
+        i+=1
+        if i == len(str):
+            return ' '
+    return str[i]
+
+
+
+def Calculator(formula):
+    a = Drobi(0,1)
+    b = Drobi(0,1)
+    res = Drobi(0,1)
+    temp = formula
+    a.chisl = makeNumberFromStr(temp)
+    if a.chisl <= 0:
+        temp = temp[1:]
+    if firstNonNumbericSymb(temp) == '/':
+        temp = NextNumTransfer(temp)
+        a.znamen = makeNumberFromStr(temp)
+    operation = firstNonNumbericSymb(temp)
+    temp = NextNumTransfer(temp)
+    if len(temp) != 0:
+        b.chisl = makeNumberFromStr(temp)
+        if b.chisl <= 0:
+            temp = temp[1:]
+        if firstNonNumbericSymb(temp) == '/':
+            temp = NextNumTransfer(temp)
+            b.znamen = makeNumberFromStr(temp)
+    else:
+        b.chisl = a.znamen
+        a.znamen = 1
+        operation = '/'
+    
+
+    if operation == '+':
+        res = Add(a,b)
+    elif operation == '-':
+        res = Subtr(a,b)
+    elif operation == '*':
+        res = Multi(a,b)
+    elif operation == '/':
+        res = Divi(a,b)
+    
+    return res
+
+
+
+
+res = Drobi(0,1)
+formula = input("Input your primer \n")
+res = Calculator(formula)
+print(formula,'=',res.printF())
