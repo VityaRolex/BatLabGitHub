@@ -1,5 +1,35 @@
 #include <iostream>
 #include <iomanip>
+#include <string>
+
+
+struct ArrWithLength
+{
+    std::string * arr;
+    size_t length;
+};
+
+
+
+ArrWithLength  makeArrWithLengthFromArr(std::string * arr, size_t length)
+{
+    ArrWithLength res;
+    res.arr = arr;
+    res.length = length;
+    return res;
+}
+
+
+
+std::ostream & operator<<(std::ostream & out, ArrWithLength arr)
+{
+    for (int i = 0; i < arr.length; ++i)
+    {
+        out << arr.arr[i] << '\n';
+    }
+    return out;
+}
+
 
 void inputIntegerValue(int32_t & element)
 {
@@ -65,7 +95,8 @@ void PrintMatrix(Type **& mtr, int rows, int cols, int width)
     {
         for (int32_t j = 0; j < cols; ++j)
         {
-            std::cout << setw(width) << mtr[i][j] << ' ';
+            //setw(width);
+            std::cout << mtr[i][j] << ' ';
         }
         std::cout << '\n';
     }
@@ -126,3 +157,7 @@ void ReverseArray(Type* arr, int64_t size)
     }
 
 }
+
+
+
+
