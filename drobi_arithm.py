@@ -68,18 +68,32 @@ def makeNumberFromStr(str):
 
 def deleteTrashSymbs(str):
     i = 0
-    while i < len(str) and ((str[i] > '9' or str[i] < '0') and (str[i] != '-' or (str[i+1] > '9' or str[i+1] < '0'))):
+    count_of_minuses = 0
+    while i < len(str) and (str[i] > '9' or str[i] < '0'):
+        if str[i] == '-':
+            count_of_minuses += 1
         i += 1
     res = str[i:]
+    if (count_of_minuses % 2 == 1):
+        res = '-' + res
     return res
 
+def moveToFirstNNS(str):
+    i = 0
+    if len(str) == 0:
+        return ''
+    while '0' <= str[i] <= '9' or str[i] == ' ':
+        i += 1
+        if i == len(str):
+            return ''
+    return str[i:]
 
 def NextNumTransfer(str):
     res = deleteTrashSymbs(str)
     i = 0
-    while res[i] >= '0' and res[i] <= '9':
+    while  res[i] >= '0' and res[i] <= '9':
         i += 1
-        if i == len(str):
+        if i == len(res):
             return ''
     res = res[i:]
     res = deleteTrashSymbs(res)
@@ -101,25 +115,32 @@ def Calculator(formula):
     b = Drobi(0,1)
     res = Drobi(0,1)
     temp = formula
+    temp = deleteTrashSymbs(temp)
     a.chisl = makeNumberFromStr(temp)
-    if a.chisl <= 0:
+    temp = temp[1:]
+    temp = moveToFirstNNS(temp)
+    if temp[0] == '/':
         temp = temp[1:]
-    if firstNonNumbericSymb(temp) == '/':
-        temp = NextNumTransfer(temp)
         a.znamen = makeNumberFromStr(temp)
-    operation = firstNonNumbericSymb(temp)
-    temp = NextNumTransfer(temp)
+        temp = temp[1:]
+        temp = moveToFirstNNS(temp)
     if len(temp) != 0:
+        operation = temp[0]
+        temp = temp[1:]
+        temp = deleteTrashSymbs(temp)
         b.chisl = makeNumberFromStr(temp)
-        if b.chisl <= 0:
+        temp = temp[1:]
+        temp = moveToFirstNNS(temp)
+        if len(temp) != 0:
+            
             temp = temp[1:]
-        if firstNonNumbericSymb(temp) == '/':
-            temp = NextNumTransfer(temp)
             b.znamen = makeNumberFromStr(temp)
+
     else:
         b.chisl = a.znamen
         a.znamen = 1
         operation = '/'
+    
     
 
     if operation == '+':
@@ -139,4 +160,4 @@ def Calculator(formula):
 res = Drobi(0,1)
 formula = input("Input your primer \n")
 res = Calculator(formula)
-print(formula,'=',res.printF())
+print(formula,'=',res.decF())
