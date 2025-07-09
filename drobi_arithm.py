@@ -1,3 +1,6 @@
+
+
+
 class Drobi:
     chisl = 0
     znamen = 1
@@ -20,6 +23,10 @@ class Drobi:
             if self.znamen % n == 0 and self.chisl % n == 0:
                 self.znamen = self.znamen//n
                 self.chisl = self.chisl//n
+    def checkRes(self):
+        if (self.znamen == 0):
+            return "Division by zero"
+        return self
     
 
 
@@ -70,6 +77,8 @@ def deleteTrashSymbs(str):
     i = 0
     count_of_minuses = 0
     while i < len(str) and (str[i] > '9' or str[i] < '0'):
+        if (str[i] != '-' and str[i] != ' '):
+            return "invalid syntax of formula"
         if str[i] == '-':
             count_of_minuses += 1
         i += 1
@@ -116,9 +125,13 @@ def Calculator(formula):
     res = Drobi(0,1)
     temp = formula
     temp = deleteTrashSymbs(temp)
+    if temp == "invalid syntax of formula":
+        return "invalid syntax of formula"
     a.chisl = makeNumberFromStr(temp)
     temp = temp[1:]
     temp = moveToFirstNNS(temp)
+    if len(temp) == 0:
+        return a
     if temp[0] == '/':
         temp = temp[1:]
         a.znamen = makeNumberFromStr(temp)
@@ -128,6 +141,8 @@ def Calculator(formula):
         operation = temp[0]
         temp = temp[1:]
         temp = deleteTrashSymbs(temp)
+        if temp == "invalid syntax of formula":
+            return "invalid syntax of formula"
         b.chisl = makeNumberFromStr(temp)
         temp = temp[1:]
         temp = moveToFirstNNS(temp)
@@ -142,16 +157,18 @@ def Calculator(formula):
         operation = '/'
     
     
-
     if operation == '+':
-        res = Add(a,b)
+       res = Add(a,b)
     elif operation == '-':
         res = Subtr(a,b)
     elif operation == '*':
-        res = Multi(a,b)
+       res = Multi(a,b)
     elif operation == '/':
         res = Divi(a,b)
-    
+    else:
+        return "operation isn't correcte"
+    res = res.checkRes()
+
     return res
 
 
@@ -160,4 +177,7 @@ def Calculator(formula):
 res = Drobi(0,1)
 formula = input("Input your primer \n")
 res = Calculator(formula)
-print(formula,'=',res.decF())
+if res == "operation isn't correcte" or res == "invalid syntax of formula" or res == "Division by zero":
+    print(res)
+else:
+    print(formula,'=',res.printF())
