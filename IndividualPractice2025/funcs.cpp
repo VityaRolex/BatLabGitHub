@@ -269,3 +269,126 @@ void ModBubbleSort(T * arr, int length, bool (*func_of_comp)(T, T))
         }
     }
 }
+
+void inputLength(int& length)
+{
+    std::cout << "Input Elements Count\n";
+    std::cin >> length;
+}
+
+template<typename T>
+void consoleInput(T * arr, int length)
+{
+    for (int i{}; i < length; ++i)
+    {
+        std::cout << i+1 << ")";
+        std::cin >> arr[i];
+        std::cout << '\n';
+    }
+}
+
+void consoleInput(Student * arr, int length)
+{
+    for (int i{}; i < length; ++i)
+    {
+        std::cout << i+1 << ")";
+        std::cout << "name-";
+        std::cin >> arr[i].name;
+        std::cout << "surname-";
+        std::cin >> arr[i].surname;
+        std::cout << "patronymic-";
+        std::cin >> arr[i].patronymic;
+        std::cout << "course-";
+        std::cin >> arr[i].course;
+        std::cout << "group-";
+        std::cin >> arr[i].group;
+        for (int j{}; j < 3; ++j)
+        {
+            std::cout << i+1 << "th mark-";
+            std::cin >> arr[i].marks[j];
+        }
+    }
+}
+
+
+template<typename T>
+void outputArr(T* arr, int length, std::ostream& out)
+{
+    for(int{}; i < length; ++i)
+    {
+        out << arr[i] << ';';
+    }
+}
+
+void outputArr(Student * arr, int length, std::ostream& out)
+{
+    for(int i{}; i < length; ++i)
+    {
+        out << arr[i].course << ';' << arr[i].group << arr[i].surname << ';' << arr[i].name << ';' << arr[i].patronymic << ";" << arr[i].marks[0] << ';' << arr[i].marks[1] << ';' << arr[i].marks[2] << '\n';
+    }
+}
+
+
+std::string GetOneWordFromFile(std::ifstream& in)
+{
+    std::string result{};
+    char buffer{};
+    while(in.get(buffer) && buffer != '\n' && buffer != ';')
+    {
+        result += buffer;
+    }
+    return result;
+}
+
+
+void fileInput(int* arr, int length, std::ifstream& file)
+{
+    for(int i{}; i < length; ++i)
+    {
+        arr[i] = stoi(GetOneWordFromFile(file));
+    }
+}
+
+void fileInput(double* arr, int length, std::ifstream& file)
+{
+    for(int i{}; i < length; ++i)
+    {
+        arr[i] = stof(GetOneWordFromFile(file));
+    }
+}
+
+
+template<typename T>
+void fileInput(T* arr, int length, std::ifstream& file)
+{
+    for(int i{}; i < length; ++i)
+    {
+        arr[i] = (GetOneWordFromFile(file)[0]);
+    }
+}
+
+
+void fileInput(Student* arr, int length, std::ifstream& file)
+{
+    for(int i{}; i < length; ++i)
+    {
+        arr[i].course = stoi(GetOneWordFromFile(file));
+        arr[i].group = stoi(GetOneWordFromFile(file));
+        arr[i].surname = GetOneWordFromFile(file);
+        arr[i].name = GetOneWordFromFile(file);
+        arr[i].patronymic = GetOneWordFromFile(file);
+        for(int j{}; j < 3; ++j)
+        {
+            arr[i].marks[j] = stoi(GetOneWordFromFile(file));
+        }
+    }
+}
+
+
+void makeRandArr(int * arr, int length)
+{
+    for(int i{}; i < length; ++i)
+    {
+        arr[i] = rand();
+    }
+}
