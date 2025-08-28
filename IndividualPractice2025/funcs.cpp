@@ -1,7 +1,7 @@
 #include "head.h"
 
 template<typename T>
-void shakeSort(Type * arr, int length, bool (*compFunc)(Type, Type))
+void shakeSort(T * arr, int length, bool (*compFunc)(T, T))
 {
     bool flag{};
     int counter{};
@@ -32,7 +32,7 @@ void shakeSort(Type * arr, int length, bool (*compFunc)(Type, Type))
 
 
 template<typename T>
-void combSort(Type * arr, int length, bool (*compFunc)(Type, Type))
+void combSort(T * arr, int length, bool (*compFunc)(T, T))
 {
     
     for (int step{length - 1}; step > 0; --step)
@@ -49,7 +49,7 @@ void combSort(Type * arr, int length, bool (*compFunc)(Type, Type))
 
 
 template<typename T>
-void countSort(Type * arr, int length, int left_lim, int right_lim)
+void countSort(T * arr, int length, int left_lim, int right_lim)
 {
     int count_length{right_lim - left_lim + 1}
     int count_arr[count_length]{};
@@ -69,4 +69,203 @@ void countSort(Type * arr, int length, int left_lim, int right_lim)
     }
 };
 
+template<typename T>
+void MergeTwoSortedArrs(T * res, T *arr1, T * arr2, int length1, int length2, bool (*func_of_comp)(T, T))
+{
+    int k{};
+    int j{};
+    int i{};
+    while (i < length1 && j < length2)
+    {
+        if(func_of_comp(arr1[i],arr2[j]))
+        {
+            res[k++] = arr1[i++];
+        }
+        else 
+        {
+            res[k++] = arr2[j++];
+        }
+    }
+    if (i != length1)
+    {
+        for (; i < length1;)
+        {
+            res[k++] = arr1[i++];
+        }
+    }
+    if (j != length2)
+    {
+        for (; j < length2;)
+        {
+            res[k++] = arr2[j++];
+        }
+    }
+    for (int i = 0; i < length1 + length2; ++i)
+    {
+        arr1[i] = res[i];
+    }
+};
 
+template<typename T>
+void mergeSort(T * res, T * subarr1, int length1, bool (*func_of_comp)(T, T), int length2 = 0, T * subarr2 = nullptr)
+{
+    if(length1 != 1 && length2 != 1)
+    {
+        
+        mergeSort(res, subarr1, length1/2, func_of_comp, length1 - length1/2, subarr1 + length1/2);
+        if (length2 != 0)
+        {
+            mergeSort(res, subarr2,length2/2, func_of_comp, length2 - length2/2, subarr2 + length2/2);
+        }
+    }
+    if (length1 == 2)
+        {
+            if (!func_of_comp(subarr1[0], subarr1[1]))
+            {
+                std::swap(subarr1[0], subarr1[1]);
+            }
+        }
+        if (length2 == 2)
+        {
+        if (!func_of_comp(subarr2[0], subarr2[1]))
+            {
+                std::swap(subarr2[0], subarr2[1]);
+            }
+        }
+    MergeTwoSortedArrs(res, subarr1, subarr2, length1, length2, func_of_comp);
+    return;
+};
+
+template<typename T>
+void MergeSort(T *arr, int length, bool (*func_of_comp)(T, T))
+{
+    T* res = new T [length];
+    mergeSort(res, arr, length, func_of_comp);
+    delete [] res;
+};
+
+template<typename T>
+void insertSort(T * arr, int length, bool (*func_of_comp)(T, T))
+{
+    T * res = new T [length];
+    for (int i = 1; i <= length; ++i)
+    {
+        MergeTwoSortedArrs(res, arr, arr + i, i, 1, func_of_comp);
+    }
+    delete [] res;
+};
+
+template<typename T>
+size_t returnIdxOfEdgeElem(T * arr, int length, bool (*func_of_comp)(T, T))
+{
+    T temp{arr[0]};
+    size_t idx{};
+    for (int i = 0; i < length; ++i)
+    {
+        if (func_of_comp(arr[i], temp))
+        {
+            idx = i;
+            temp = arr[i];
+        }
+    }
+    return idx;
+};
+
+template<typename T>
+void selectionSort(T *arr, int length, bool (*func_of_comp)(T, T))
+{
+    for (int i = 0; i < length; ++i)
+    {
+        std::swap(arr[i], arr[i + returnIdxOfEdgeElem(arr + i, length - i, func_of_comp)]);
+    }
+};
+
+
+template<typename T>
+void QuickSort(T * arr, int length, bool (*func_of_comp)(T, T))
+{
+    T pivot = arr[length / 2];
+    int length1{};
+    int length2{};
+    int length3{};
+    T * left_arr = new T [length];
+    T * mid_arr = new T [length];
+    T * right_arr = new T [length];
+    for (int i = 0; i < length; ++i)
+    {
+        if (func_of_comp(arr[i], pivot))
+        {
+            left_arr[length1] = arr[i];
+            ++length1;
+        }
+        else if (arr[i] == pivot)
+        {
+            mid_arr[length2] = arr[i];
+            ++length2;
+        }
+        else
+        {
+            right_arr[length3] = arr[i];
+            ++length3;
+        }
+    }
+    if (length1 > 1)
+    {
+        QuickSort(left_arr, length1, func_of_comp);
+    }
+    if (length3 > 1)
+    {
+        QuickSort(right_arr, length3, func_of_comp);
+    }
+    int i = 0;
+    for (int j = 0; j < length1; ++j)
+    {
+        arr[i] = left_arr[j];
+        ++i;
+    }
+    for (int j = 0; j < length2; ++j)
+    {
+       arr[i] = mid_arr[j];
+        ++i;
+    }
+    for (int j = 0; j < length3; ++j)
+    {
+        arr[i] = right_arr[j];
+        ++i;
+    }
+};
+
+
+template<typename T>
+void ModBubbleSort(T * arr, int length, bool (*func_of_comp)(T, T))
+{
+    int i{};
+    int j{length - 1};
+    while (i!= length - 1 || j != 0)
+    {
+        if (i!= length - 1)
+        {
+            if (!func_of_comp(arr[i], arr[i+1]))
+            {
+                std::swap(arr[i], arr[i+1]);
+                i = 0;
+            }
+            else
+            {
+                i += 1;
+            }
+        }
+        if (j != 0)
+        {
+            if (func_of_comp(arr[j], arr[j - 1]))
+            {
+                std::swap(arr[j], arr[j - 1]);
+                j = length - 1;
+            }
+            else
+            {
+                j -= 1;
+            }
+        }
+    }
+}
