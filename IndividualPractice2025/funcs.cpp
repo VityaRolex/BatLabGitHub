@@ -341,6 +341,39 @@ std::string GetOneWordFromFile(std::ifstream& in)
 }
 
 
+template <typename T>
+void fisherYatesShuffle(T* arr, int length) {
+    std::random_device rd;     
+    std::mt19937 gen(rd());    
+    for (int i = length - 1; i > 0; --i) {
+        std::uniform_int_distribution<> dist(0, i);
+        int j = dist(gen);
+        std::swap(arr[i], arr[j]);
+    }
+}
+template<typename T>
+bool orderCheck(T* arr, int length, bool (*compareFunc)(T, T))
+{
+    for (int i{}; i < length - 1; ++i)
+    {
+        if (!compareFunc(arr[i], arr[i+1]))
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
+template<typename T>
+void bogoSort(T* arr, int length, bool (*compFunc)(T,T))
+{
+    while(!orderCheck(arr, length, compFunc))
+    {
+        fisherYatesShuffle(arr, length);
+    }
+}
+
 void fileInput(int* arr, int length, std::ifstream& file)
 {
     for(int i{}; i < length; ++i)
