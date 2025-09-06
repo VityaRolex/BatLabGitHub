@@ -22,12 +22,19 @@ class Fraction
             throw std::runtime_error("Деление на ноль");
         }
     }
+    Fraction makeRevFrac(const Fraction& frac)
+    {
+        Fraction res(frac.denom, frac.num, frac.neg);
+        res.simplify();
+        return res;
+    }
 public:
     Fraction(uint64_t nom = 0, uint64_t denum = 1, bool nego = 0)
     {
         num = nom;
         denom = denum;
         neg = nego;
+        simplify();
     }
     friend Fraction operator +(const Fraction& a, const Fraction& b);
     friend Fraction operator *(const Fraction& a, const Fraction& b);
@@ -73,8 +80,7 @@ Fraction operator *(const Fraction&a, const Fraction& b)
 
 Fraction operator /(const Fraction& a, const Fraction& b)
 {
-    Fraction tmp(b.denom, b.num, b.neg);
-    return a * tmp;
+    return a * Fraction().makeRevFrac(b);
 }
 
 
@@ -110,7 +116,7 @@ int main()
     Fraction res;
     try
     {
-        res = minFrac(f1, f2);
+        res = f1/f2;
         std::cout << res;
     }
     catch(const std::runtime_error& e)
