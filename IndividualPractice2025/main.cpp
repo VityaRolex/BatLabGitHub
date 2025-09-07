@@ -4,6 +4,17 @@
 #include<string>
 #include<fstream>
 #include<random>
+#include"head.h"
+
+template<typename T>
+void outputArr(T* arr, int length, std::ostream& out)
+{
+    for(int i{}; i < length; ++i)
+    {
+        out << arr[i] << '\n';
+    }
+};
+
 
 template<typename T>
 void shakeSort(T * arr, int length, bool (*compFunc)(T, T))
@@ -182,6 +193,8 @@ void selectionSort(T *arr, int length, bool (*func_of_comp)(T, T))
     for (int i = 0; i < length; ++i)
     {
         std::swap(arr[i], arr[i + returnIdxOfEdgeElem(arr + i, length - i, func_of_comp)]);
+        outputArr(arr, length, std::cout);
+        std::cout << '\n';
     }
 };
 
@@ -269,18 +282,7 @@ void inputLength(int& length)
     std::cin >> length;
 }
 
-template<typename T>
-void consoleInput(T * arr, int length)
-{
-    for (int i{}; i < length; ++i)
-    {
-        std::cout << i+1 << ")";
-        std::cin >> arr[i];
-        std::cout << '\n';
-    }
-}
-
-/*void consoleInput(Student * arr, int length)
+void consoleInputStudent(Student * arr, int length)
 {
     for (int i{}; i < length; ++i)
     {
@@ -301,19 +303,25 @@ void consoleInput(T * arr, int length)
             std::cin >> arr[i].marks[j];
         }
     }
-};*/
-
-
-
+}
 
 template<typename T>
-void outputArr(T* arr, int length, std::ostream& out)
+void consoleInput(T * arr, int length)
 {
-    for(int i{}; i < length; ++i)
+    for (int i{}; i < length; ++i)
     {
-        out << arr[i] << ';';
+        std::cout << i+1 << ")";
+        std::cin >> arr[i];
+        std::cout << '\n';
     }
-};
+}
+
+
+
+
+
+
+
 
 
 
@@ -360,10 +368,12 @@ void bogoSort(T* arr, int length, bool (*compFunc)(T,T))
     while(!orderCheck(arr, length, compFunc))
     {
         fisherYatesShuffle(arr, length);
+        outputArr(arr, length, std::cout);
+        std::cout << '\n';
     }
 }
 
-void fileInput(int* arr, int length, std::ifstream& file)
+void fileInputInt(int* arr, int length, std::ifstream& file)
 {
     for(int i{}; i < length; ++i)
     {
@@ -371,7 +381,7 @@ void fileInput(int* arr, int length, std::ifstream& file)
     }
 }
 
-void fileInput(double* arr, int length, std::ifstream& file)
+void fileInputDouble(double* arr, int length, std::ifstream& file)
 {
     for(int i{}; i < length; ++i)
     {
@@ -387,10 +397,10 @@ void fileInput(T* arr, int length, std::ifstream& file)
     {
         arr[i] = (GetOneWordFromFile(file)[0]);
     }
-}
+};
 
 
-/*void fileInput(Student* arr, int length, std::ifstream& file)
+void fileInputStud(Student* arr, int length, std::ifstream& file)
 {
     for(int i{}; i < length; ++i)
     {
@@ -404,7 +414,7 @@ void fileInput(T* arr, int length, std::ifstream& file)
             arr[i].marks[j] = stoi(GetOneWordFromFile(file));
         }
     }
-}*/
+}
 
 
 void makeRandArr(int * arr, int length)
@@ -422,23 +432,447 @@ bool compFunc(int a, int b)
 }
 
 
+int countElems(std::ifstream& in)
+{
+    char buffer{};
+    int length{};
+    while (!in.eof())
+    {
+        buffer = in.get();
+        if (buffer == ';' || buffer == '\n')
+        {
+            ++length;
+        }
+    }
+    in.clear();
+    in.seekg(std::ios::beg);
+    return length;
+}
+
+int countStuds(std::ifstream& in)
+{
+    char buffer{};
+    int length{};
+    while (!in.eof())
+    {
+        buffer = in.get();
+        if ( buffer == '\n')
+        {
+            ++length;
+        }
+    }
+    in.clear();
+    in.seekg(std::ios::beg);
+    return length;
+}
+
+
+template<typename T>
+T maxElem(T * arr, int length, bool (*compFunc)(T, T))
+{
+    T res = arr[0];
+    for (int i{}; i < length; ++i)
+    {
+        if (!compFunc(res, arr[i]))
+        {
+            res = arr[i];
+        }
+    }
+    return res;
+}
+
+template<typename T>
+T minElem(T * arr, int length, bool (*compFunc)(T, T))
+{
+    T res = arr[0];
+    for (int i{}; i < length; ++i)
+    {
+        if (compFunc(res, arr[i]))
+        {
+            res = arr[i];
+        }
+    }
+    return res;
+}
+
+void countSort(Student* arr, int length, Student minElem, Student maxElem)
+{
+    //do nothing
+}
+
+void countSort(std::string* arr, int length, std::string minElem, std::string maxElem)
+{
+    //do nothing
+}
+
+template<typename T>
+void Sorting(T* arr, int32_t size, int32_t Method_Sort, bool (*compFunc)(T,T))
+{
+    switch (Method_Sort)
+    {
+    case 0:
+        ModBubbleSort(arr, size, compFunc);
+        break;
+    case 1:
+        shakeSort(arr, size, compFunc);
+        break;
+    case 2:
+        combSort(arr, size, compFunc);
+        break;
+    case 3:
+        insertSort(arr, size, compFunc);
+        break;
+    case 4:
+        selectionSort(arr, size, compFunc);
+        break;
+    case 5:
+        QuickSort(arr, size, compFunc);
+        break;
+    case 6:
+        MergeSort(arr, size, compFunc);
+        break;
+    case 7:
+        countSort(arr, size, minElem(arr, size, compFunc), maxElem(arr, size, compFunc));
+    case 8:
+        bogoSort(arr, size, compFunc);
+        break;
+    default:
+        std::cout << "This sort method is not realized.\n";
+        break;
+    }
+}
+
+void Data_type(int32_t& dataType)
+{
+    std::cout << "Select data type: 0 - numbers, 1 - strings, 2 - students\n";
+    std::cin >> dataType;
+}
+
+
+
+
+void ChooseMethods(int32_t& Method_Sort)
+{
+    std::cout << "Choose the sorting method\n\n";
+    std::cout << "Bubble Sort O(n*n) - 0\n";
+    std::cout << "Cocktail Shaker Sort O(n*n) - 1\n";
+    std::cout << "Comb Sort O(n log n). - 2\n";
+    std::cout << "Insertion Sort O(n*n) - 3\n";
+    std::cout << "Selection Sort O(n*n)  - 4\n";
+    std::cout << "Quick Sort O(n log n) - 5\n";
+    std::cout << "Merge Sort O(n log n) - 6\n";
+    std::cout << "Counting Sort(not for string and stud) O(n + k)\n";
+    std::cout << "BogoSort O(n * n!) - 8\n";
+
+    std::cin >> Method_Sort;
+    if (Method_Sort < 0 || Method_Sort > 8)
+    {
+        throw std::runtime_error("Mistake in input sort");
+    }
+}
+
+bool compFunc(std::string a, std::string b)
+{
+    return a < b;
+}
+
+bool EqualTwoArrs(int * arr1, int * arr2)
+{
+    bool flag[3]{};
+    for (int i{}; i < 3; ++i)
+    {
+        for (int j{}; j < 3; ++j)
+        {
+            if (arr1[i] == arr2[j])
+            {
+                flag[j] = !flag[j];
+            }
+        }
+    }
+    return flag[0] && flag[1] && flag[2];
+}
+
+
+bool operator ==(Student a, Student b)
+{
+    return a.course == b.course && a.group == b.group && a.name == b.name && a.patronymic == b.patronymic && a.surname == b.surname && EqualTwoArrs(a.marks, b.marks);
+}
+bool compFuncBySurname(Student a, Student b)
+{
+    return a.surname + a.name + a.patronymic < b.surname + b.name + b.patronymic;
+}
+
+bool compFuncByCourse(Student a, Student b)
+{
+    return a.course < b.course;
+}
+
+bool compFuncByGroup(Student a, Student b)
+{
+    return a.group < b.group;
+}
+
+
+void outputArr(Student * arr, int length, std::ostream& out)
+{
+    for(int i{}; i < length; ++i)
+    {
+        out << arr[i].course << ';' << arr[i].group << ';' << arr[i].surname << ';' << arr[i].name << ';' << arr[i].patronymic;
+        for(int j{}; j < 3; ++j)
+        {
+            out << ';' << arr[i].marks[j];
+        }
+        std::cout << '\n';
+    }
+}
 
 
 int main()
 {
-    int* arr = new int [50];
-    for (int i = 0; i < 50; ++i)
+    std::ifstream file("file.txt");
+    int inputType;
+    int length;
+    int dataType;
+    int * arr0{};
+    std::string * arr1{};
+    Student * arr2{};
+
+    try
     {
-        arr[i] = rand()%100;
+        
+        std::cout << "Choose input type: 1 - from file, 2 - from console\n";
+        std::cin >> inputType;
+        if(inputType > 2 || inputType < 1)
+        {
+            throw std::invalid_argument("invalid input type");
+        }
     }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return 1;
+    }
+
+
+    try
+    {
+        
+        std::cout << "Select data type: 0 - numbers, 1 - strings, 2 - students\n";
+        std::cin >> dataType;
+        if (dataType > 2 || dataType < 0)
+        {
+            throw std::invalid_argument("That type doesn't exist");
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return 3;
+    }
+
+    if(inputType == 1)
+    {
+        switch (dataType)
+        {
+        case 0:
+        {
+            length = countElems(file);
+            arr0 = new int[length];
+            fileInput(arr0, length, file);
+            break;
+        }
+            
+        case 1:
+        {
+            length = countElems(file);
+            arr1 = new std::string[length];
+            fileInput(arr1, length, file);
+            break;
+        }
+            
+        case 2:
+        {
+            length = countStuds(file);
+            arr2 = new Student[length];
+            fileInputStud(arr2,length, file);
+            break;
+        }    
+        default:
+            break;
+        }
+    }
+    
+    if (inputType == 2)
+    {
+        try
+        {
+            std::cout << "input length of array\n";
+            std::cin >> length;
+            if (length <= 0)
+            {
+                throw std::length_error("invalid length of array");
+            }  
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+            return 2;
+        }
+        switch (dataType)
+        {
+        case 0:
+        {
+            arr0 = new int[length];
+            consoleInput(arr0, length);
+            break;
+        }
+        case 1:
+        {
+            arr1 = new std::string[length];
+            consoleInput(arr1, length);
+            break;
+        }
+        case 2:
+        {
+            arr2 = new Student[length];
+            consoleInputStudent(arr2, length);
+            break;
+        }
+        default:
+            break;
+        }
+    }
+
+    int sortType;
+    ChooseMethods(sortType);
+    switch (dataType)
+    {
+    case 0:
+    {
+        Sorting(arr0, length, sortType, compFunc);
+        break;
+    }
+    case 1:
+    {
+        Sorting(arr1, length, sortType, compFunc);
+        break;
+    }
+    case 2:
+    {
+        Sorting(arr2, length, sortType, compFuncByCourse);
+        for (int i{}; i < length; ++i)
+        {
+            for(int j{i}; j < length; ++j)
+            {
+                if (arr2[j + 1].course != arr2[i].course)
+                {
+                    Sorting(&arr2[i], j - i + 1, sortType, compFuncByGroup);
+                }
+            }
+        }
+        for (int i{}; i < length; ++i)
+        {
+            for(int j{i}; j < length; ++j)
+            {
+                if (arr2[j + 1].course != arr2[i].course || arr2[j+1].group != arr2[i].group)
+                {
+                    Sorting(&arr2[i], j - i + 1, sortType, compFuncBySurname);
+                }
+            }
+        }
+        break;
+    }
+    default:
+        break;
+    }
+
+    int returnType;
+    try
+    {
+        
+        std::cout << "Choose output type: 1 - to file, 2 - to console\n";
+        std::cin >> returnType;
+        if(returnType > 2 || returnType < 1)
+        {
+            throw std::invalid_argument("invalid output type");
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return 4;
+    }
+    std::ofstream out("out.txt");
+    switch(returnType)
+    {
+        case 1:
+        {
+            switch(dataType)
+            {
+                case 2:
+                {
+                    outputArr(arr2, length, out);
+                    break;
+                }
+                case 0:
+                {
+                    outputArr(arr0, length, out);
+                    break;
+                }
+                case 1:
+                {
+                    outputArr(arr1, length, out);
+                    break;
+                }
+                default:
+                    break;
+
+            }
+        }
+        case 2:
+        {
+            switch(dataType)
+            {
+                case 2:
+                {
+                    outputArr(arr2, length, std::cout);
+                    break;
+                }
+                case 0:
+                {
+                    outputArr(arr0, length, std::cout);
+                    break;
+                }
+                case 1:
+                {
+                    outputArr(arr1, length, std::cout);
+                    break;
+                }
+                default:
+                    break;
+
+            }
+        }
+    }
+    
+  
+
+
+
+    
+
+
+    
+
+
     auto start_time = std::chrono::system_clock::now();
 
-    ModBubbleSort(arr, 50, compFunc);
+
     auto finish_time = std::chrono::system_clock::now();
    
     auto elapsed_milliseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(finish_time - start_time);
-    std::cout << elapsed_milliseconds.count() << '\n';
-    outputArr(arr, 50, std::cout);
+    std::cout << "time:" << elapsed_milliseconds.count() << '\n';
+
     return 0;
 }
 
