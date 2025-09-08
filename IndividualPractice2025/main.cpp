@@ -505,6 +505,11 @@ void countSort(std::string* arr, int length, std::string minElem, std::string ma
     //do nothing
 }
 
+void countSort(double* arr, int length, double minElem, double maxElem)
+{
+    //do nothing
+}
+
 template<typename T>
 void Sorting(T* arr, int32_t size, int32_t Method_Sort, bool (*compFunc)(T,T))
 {
@@ -544,7 +549,7 @@ void Sorting(T* arr, int32_t size, int32_t Method_Sort, bool (*compFunc)(T,T))
 
 void Data_type(int32_t& dataType)
 {
-    std::cout << "Select data type: 0 - numbers, 1 - strings, 2 - students\n";
+    std::cout << "Select data type: 0 - integer numbers, 1 - strings, 2 - students, 3 - double numbers\n";
     std::cin >> dataType;
 }
 
@@ -612,6 +617,29 @@ bool compFuncByGroup(Student a, Student b)
     return a.group < b.group;
 }
 
+void randFillInt(int * arr, int length)
+{
+    for(int i{}; i < length; ++i)
+    {
+        arr[i] = rand();
+    }
+}
+
+
+
+
+void randFillDouble(double * arr, int length)
+{
+    for(int i{}; i < length; ++i)
+    {
+        arr[i] = ((double)rand())/rand();
+    }
+}
+
+bool compFuncDouble(double a, double b)
+{
+    return a < b;
+}
 
 void outputArr(Student * arr, int length, std::ostream& out)
 {
@@ -636,13 +664,14 @@ int main()
     int * arr0{};
     std::string * arr1{};
     Student * arr2{};
+    double * arr4{};
 
     try
     {
         
-        std::cout << "Choose input type: 1 - from file, 2 - from console\n";
+        std::cout << "Choose input type: 1 - from file, 2 - from console, 3 - random fill\n";
         std::cin >> inputType;
-        if(inputType > 2 || inputType < 1)
+        if(inputType > 3 || inputType < 1)
         {
             throw std::invalid_argument("invalid input type");
         }
@@ -657,9 +686,9 @@ int main()
     try
     {
         
-        std::cout << "Select data type: 0 - numbers, 1 - strings, 2 - students\n";
+        std::cout << "Select data type: 0 - integer numbers, 1 - strings, 2 - students, 3 - float numbers\n";
         std::cin >> dataType;
-        if (dataType > 2 || dataType < 0)
+        if (dataType > 3 || dataType < 0)
         {
             throw std::invalid_argument("That type doesn't exist");
         }
@@ -697,6 +726,13 @@ int main()
             fileInputStud(arr2,length, file);
             break;
         }    
+        case 3:
+        {
+            length = countStuds(file);
+            arr4 = new double[length];
+            fileInputDouble(arr4, length, file);
+            break;
+        }
         default:
             break;
         }
@@ -738,8 +774,44 @@ int main()
             consoleInputStudent(arr2, length);
             break;
         }
+        case 3:
+        {
+            arr4 = new double[length];
+            consoleInput(arr4, length);
+            break;
+        }
         default:
             break;
+        }
+    }
+
+    if(inputType == 3)
+    {
+        std::cout << "input length\n";
+        std::cin >> length;
+        if (length <= 0)
+        {
+            throw std::length_error("length must be positive number");
+        }
+        switch (dataType)
+        {
+        case 0:
+        {
+            arr0 = new int[length];
+            randFillInt(arr0, length);
+            break;
+        }
+        case 3:
+        {
+            arr4 = new double[length];
+            randFillDouble(arr4, length);
+            break;
+        }
+        default:
+        {
+            std::cout << "There is no random generator for your type\n";
+            return 5;
+        }
         }
     }
 
@@ -780,6 +852,12 @@ int main()
                 }
             }
         }
+        
+        break;
+    }
+    case 3:
+    {
+        Sorting(arr4, length, sortType, compFuncDouble);
         break;
     }
     default:
@@ -824,6 +902,11 @@ int main()
                     outputArr(arr1, length, out);
                     break;
                 }
+                case 3:
+                {
+                    outputArr(arr4, length, std::cout);
+                    break;
+                }
                 default:
                     break;
 
@@ -846,6 +929,11 @@ int main()
                 case 1:
                 {
                     outputArr(arr1, length, std::cout);
+                    break;
+                }
+                case 3:
+                {
+                    outputArr(arr4, length, std::cout);
                     break;
                 }
                 default:
