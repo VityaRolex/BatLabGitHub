@@ -249,13 +249,14 @@ int main()
                 }
                 case 3:
                 {
-                    outputArr(arr4, length, std::cout);
+                    outputArr(arr4, length, out);
                     break;
                 }
                 default:
                     break;
 
             }
+            break;
         }
         case 2:
         {
@@ -285,6 +286,7 @@ int main()
                     break;
 
             }
+            break;
         }
     }
     auto start_time = std::chrono::system_clock::now();
