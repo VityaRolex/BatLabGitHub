@@ -9,11 +9,11 @@ class Fraction
     bool neg{false};
     void simplify()
     {
+        checkDenom();
         uint64_t GCD = std::gcd(num, denom);
         neg /= GCD;
         num /= GCD;
         denom /= GCD;
-        checkDenom();
     }
     void checkDenom()
     {
@@ -22,12 +22,6 @@ class Fraction
             throw std::runtime_error("Деление на ноль");
         }
     }
-    Fraction makeRevFrac(const Fraction& frac)
-    {
-        Fraction res(frac.denom, frac.num, frac.neg);
-        res.simplify();
-        return res;
-    }
 public:
     Fraction(uint64_t nom = 0, uint64_t denum = 1, bool nego = 0)
     {
@@ -35,21 +29,77 @@ public:
         denom = denum;
         neg = nego;
         simplify();
+        if(num == 0)
+        {
+            denom = 1;
+            neg = false;
+        }
     }
     friend Fraction operator +(const Fraction& a, const Fraction& b);
     friend Fraction operator *(const Fraction& a, const Fraction& b);
     friend Fraction operator /(const Fraction& a, const Fraction& b);
     friend Fraction operator -(const Fraction& a, const Fraction& b);
     friend Fraction minFrac(const Fraction& a, const Fraction& b);
-    friend std::ostream& operator <<(std::ostream& out, Fraction a);
+    friend std::ostream& operator <<(std::ostream& out, const Fraction& a);
+    friend Fraction operator ~(const Fraction& a);
+    friend Fraction operator -(const Fraction& a);
+    Fraction operator ++()
+    {
+        *this = *this + Fraction(1,1,0);
+        return *this;
+    };
+    Fraction operator --()
+    {
+        *this = *this + Fraction(1,1,1);
+        return *this;
+    }
+    Fraction operator ++(int)
+    {
+        Fraction temp = *this;
+        ++(*this);
+        return temp;
+    };
+    Fraction operator --(int)
+    {
+        Fraction temp = *this;
+        --(*this);
+        return temp;
+    };
+    bool operator ==(const Fraction& second)
+    {
+        return this->num == second.num && this->denom == second.denom && this->neg == second.neg;
+    }
+    bool operator <(const Fraction& second)
+    {
+        return minFrac(*this, second) == *this;
+    }
 };
 
 
-
-std::ostream& operator <<(std::ostream& out, Fraction a)
+Fraction operator -(const Fraction& a)
 {
-    char sign{a.neg == true ? '-' : ' '};
-    std::cout << sign << a.num << '/' << a.denom;
+    return Fraction(a.num, a.denom, !a.neg);
+}
+
+
+Fraction operator ~(const Fraction& a)
+{
+    return Fraction(a.denom, a.num, a.neg);
+}
+
+
+std::ostream& operator <<(std::ostream& out, const Fraction& a)
+{
+    char sign{};
+    if(a.neg)
+    {
+        sign = '-';
+    }
+    std::cout << sign << a.num;
+    if (a.denom != 1)
+    {
+        std::cout << '/' << a.denom;
+    }
     return out;
 }
 
@@ -72,52 +122,48 @@ Fraction minFrac(const Fraction& a, const Fraction& b)
 
 Fraction operator *(const Fraction&a, const Fraction& b)
 {
-    Fraction f(a.num*b.num, a.denom*b.denom, a.neg == b.neg ? 0:1);
-    f.simplify();
-    return f;
+    return Fraction(a.num * b.num, a.denom * b.denom, a.neg != b.neg);
 }
 
 
 Fraction operator /(const Fraction& a, const Fraction& b)
 {
-    return a * Fraction().makeRevFrac(b);
+    return a * (~b);
 }
 
 
 Fraction operator +(const Fraction& a, const Fraction& b)
 {
-    int t1 = a.num*b.denom;
-    int t2 = a.denom*b.num;
+    int t1 = a.num * b.denom;
+    int t2 = a.denom * b.num;
     bool swapped{};
     if (a.neg != b.neg && t1 < t2)
     {
         std::swap(t1,t2);
         swapped = true;
     }
-    Fraction f{t1 + (t2*(a.neg == b.neg ? 1 : -1)), a.denom*b.denom, a.neg^swapped};
-    f.simplify();
-    return f;
+    return Fraction(t1 + (t2 * (a.neg == b.neg ? 1 : -1)), a.denom*b.denom, a.neg ^ swapped);
 }
 
 
 Fraction operator -(const Fraction& a, const Fraction& b)
 {
-    Fraction tmp(b.num, b.denom, !b.neg);
-    return a + tmp;
+    return a + (-b);
 }
-
-
 
 
 int main()
 {
+
+    int a[5]{0,1,2,3,4};
+    //std::cout << 2[a];
     Fraction f2(1,2, 0);
     Fraction f1(1,3,0);
     Fraction res;
     try
     {
-        res = f1/f2;
-        std::cout << res;
+        res = ++(f1++++++);
+        std::cout << res << f1;
     }
     catch(const std::runtime_error& e)
     {
