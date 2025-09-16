@@ -35,6 +35,17 @@ public:
             neg = false;
         }
     }
+    Fraction& Fraction::operator =(const Fraction& rhs)
+    {
+        if(this != &rhs)
+        {
+            this->num = rhs.num;
+            this->denom = rhs.denom;
+            this->neg = rhs.neg;
+        }
+        return *this;
+    }
+    
     friend Fraction operator +(const Fraction& a, const Fraction& b);
     friend Fraction operator *(const Fraction& a, const Fraction& b);
     friend Fraction operator /(const Fraction& a, const Fraction& b);
