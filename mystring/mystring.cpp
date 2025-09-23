@@ -15,20 +15,20 @@ Mystring& Mystring::operator =(const Mystring& init)
     return *this;
 }
 
-const Mystring& Mystring::operator +(const Mystring& rhs)
+
+bool Mystring::operator ==(const Mystring& rhs)
 {
-    size_t length = this->length + rhs.length;
-    char* res = new char[length];
-    int counter{};
-    for(int i = 0; i < this->length; ++i)
-    {
-        res[counter++] = this->start[i];
-    }
-    for(int i = 0; i < rhs.length; ++i)
-    {
-        res[counter++] = rhs.start[i];
-    }
-    return Mystring(res, length);
+    
+    return strcmp(this->start, rhs.start) == 0;
+}
+
+
+const Mystring Mystring::operator +(const Mystring& rhs)
+{
+    char * res = new char[this->length + rhs.length];
+    strcpy(res, this->start);
+    strcat(res, rhs.start);
+    return(Mystring(res));
 }
 
 std::ostream& operator <<(std::ostream& out, const Mystring& a)

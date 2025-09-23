@@ -1,6 +1,6 @@
 #ifndef MYSTRING_H
 #define MYSTRING_H
-
+#include<cstring>
 #include<iostream>
 
 class Mystring
@@ -9,32 +9,31 @@ class Mystring
     size_t length;
 public:
 
-Mystring(char* init = nullptr, size_t length = 0)
+Mystring(char* init = nullptr)
 {
-    this->length = length;
+    this->length = strlen(init);
     this->start = new char[length];
-    for(int i = 0; i < length; ++i)
-    {
-        (this->start)[i] = init[i];
-    }
+    strcpy(this->start, init);
 }
 ~Mystring()
 {
     delete []this->start;
-    std::cout << "Mystring has been deleted";
+    //std::cout << "Mystring has been deleted";
 }
 Mystring(const Mystring& init)
 {
     this->length = init.length;
     this->start = new char[this->length];
-    for(int i = 0; i < length; ++i)
-    {
-        (this->start)[i] = init.start[i];
-    }
+    strcpy(this->start, init.start);
 }
 Mystring& operator =(const Mystring& init);
-const Mystring& operator +(const Mystring& rhs);
+const Mystring operator +(const Mystring& rhs);
 friend std::ostream& operator <<(std::ostream& out, const Mystring& a);
+bool operator ==(const Mystring& rhs);
+int operator <=(const Mystring& rhs)
+{
+    return strcmp(this->start, rhs.start) <= 0;
+}
 };
 
 
