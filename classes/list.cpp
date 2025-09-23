@@ -1,10 +1,10 @@
 #include "list.h"
 
 void List::InsertFirst(const int& Ainfo){
- ListItem* p = new ListItem;
- p->Info = Ainfo;
- p->Next = first;
- first = p;
+ ListItem* ptrItemList = new ListItem;
+ ptrItemList->Info = Ainfo;
+ ptrItemList->Next = first;
+ first = ptrItemList;
 }
 void List::ListPrint() const {
  ListItem* P = first;
@@ -35,9 +35,9 @@ bool List::DeleteFirst(){
  {
   return false;
  }
- ListItem* p = first;
+ ListItem* ptrItemList = first;
  first = first->Next;
- delete p;
+ delete ptrItemList;
  return true;
 }
 const int List::Top() const {
@@ -50,33 +50,33 @@ const int List::Top() const {
 }
 void List::Clone(const List& L) {
  Erase(); 
- ListItem* p = L.first;
- ListItem* q = nullptr;
- ListItem* r = nullptr;
+ ListItem* ptrItemList = L.first;
+ ListItem* TempPtrItem = nullptr;
+ ListItem* ptrLastAddedItem = nullptr;
 
- while (p != nullptr) {
-  q = new ListItem;
-  q->Info = p->Info;
-  q->Next = nullptr;
+ while (ptrItemList != nullptr) {
+  TempPtrItem = new ListItem;
+  TempPtrItem->Info = ptrItemList->Info;
+  TempPtrItem->Next = nullptr;
 
-  if (r == nullptr) {
-   first = q;
+  if (ptrLastAddedItem == nullptr) {
+   first = TempPtrItem;
   }
   else {
-   r->Next = q;
+   ptrLastAddedItem->Next = TempPtrItem;
   }
-  r = q;
-  p = p->Next;
+  ptrLastAddedItem = TempPtrItem;
+  ptrItemList = ptrItemList->Next;
  }
 }
 void List::Erase() {
- ListItem* p;
- ListItem* q;
- p = first;
- while (p != nullptr) {
-  q = p->Next;
-  delete p;
-  p = q;
+ ListItem* ptrItemList;
+ ListItem* tempPtrItem;
+ ptrItemList = first;
+ while (ptrItemList != nullptr) {
+  tempPtrItem = ptrItemList->Next;
+  delete ptrItemList;
+  ptrItemList = tempPtrItem;
  }
  first = nullptr;
 }
