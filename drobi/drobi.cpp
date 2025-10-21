@@ -167,18 +167,6 @@ int main()
 {
 
     int a[5]{0,1,2,3,4};
-    //std::cout << 2[a];
-    Fraction f2(1,2, 0);
-    Fraction f1(1,3,0);
-    Fraction res;
-    try
-    {
-        res = ++(f1++++++);
-        std::cout << res << f1;
-    }
-    catch(const std::runtime_error& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    std::cout << 3[a];
     return 0;
 }
