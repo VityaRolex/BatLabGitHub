@@ -8,27 +8,31 @@ class Mystring
     char* start;
     size_t length;
 public:
-
-Mystring(const char* init = "")
+Mystring(size_t length);
+Mystring();
+Mystring(const char* init)
 {
     this->length = strlen(init);
-    this->start = new char[length];
+    this->start = new char[length + 1];
     strcpy(this->start, init);
 }
 ~Mystring()
 {
-    delete []this->start;
+    delete []this->start;               //clone, erase
+    this->start = nullptr;
+    this->length = 0;
     //std::cout << "Mystring has been deleted";
 }
 Mystring(const Mystring& init)
 {
     this->length = init.length;
-    this->start = new char[this->length];
+    this->start = new char[this->length + 1];
     strcpy(this->start, init.start);
 }
+void get_start(char* buffer);
+size_t get_length();
 Mystring& operator =(const Mystring& init);
 const Mystring operator +(const Mystring& rhs);
-friend std::ostream& operator <<(std::ostream& out, const Mystring& a);
 bool operator ==(const Mystring& rhs);
 int operator <=(const Mystring& rhs);
 const Mystring operator+(const char* rhs);
@@ -41,5 +45,6 @@ Mystring operator +=(const Mystring& init);
 Mystring substr(size_t length, size_t start = 0);
 };
 
+std::ostream& operator <<(std::ostream& out, Mystring& a);
 
 #endif

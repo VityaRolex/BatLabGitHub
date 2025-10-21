@@ -5,11 +5,25 @@ Mystring& Mystring::operator =(const Mystring& init)
     if(this != &init)
     {
         delete []this->start;
-        this->start = new char[init.length];
+        this->start = new char[init.length + 1];
         this->length = init.length;
         strcpy(this -> start, init.start);
     }
     return *this;
+}
+
+Mystring::Mystring(size_t length)
+{
+    this->length = length;
+    this->start = new char[length + 1];
+    this->start[0] = '\0';
+}
+
+Mystring::Mystring()
+{
+    this->length = 0;
+    this->start = new char[1];
+    this->start[0] = '\0';
 }
 
 
@@ -31,19 +45,36 @@ const Mystring Mystring::operator+(const char* rhs)
 
 const Mystring Mystring::operator +(const Mystring& rhs)
 {
-    char * res = new char[this->length + rhs.length];
-    strcpy(res, this->start);
-    strcat(res, rhs.start);
-    return(Mystring(res));
+    Mystring res;
+    delete [] res.start; 
+    res.length = rhs.length + this->length;
+    res.start = new char[res.length + 1];
+    strcpy(res.start, this->start);
+    strcat(res.start, rhs.start);
+    return res;
+}
+void Mystring::get_start(char* buffer)
+{
+    delete [] buffer;
+    char* buffer = new char[this->get_length() + 1];
+    strcpy(buffer, this->start);
 }
 
-std::ostream& operator <<(std::ostream& out, const Mystring& a)
-{
-    for(int i = 0; i < a.length;++i)
-    {
-        out << a.start[i];
-    }
+std::ostream& operator <<(std::ostream& out, Mystring& a)
+{   
+    char* buffer{};
+    a.get_start(buffer);            //конструктор перемещения, оператор присваивания с перемещением
+    out << buffer;
+    delete []buffer;
     return out;
+}
+
+
+
+
+size_t Mystring::get_length()
+{
+    return length;
 }
 
 
