@@ -18,7 +18,7 @@ Mystring(const char* init)
 }
 ~Mystring()
 {
-    delete []this->start;               //clone, erase
+    delete []this->start;               
     this->start = nullptr;
     this->length = 0;
     //std::cout << "Mystring has been deleted";
