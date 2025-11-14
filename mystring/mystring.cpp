@@ -63,7 +63,7 @@ void Mystring::get_start(char* buffer)
 std::ostream& operator <<(std::ostream& out, Mystring& a)
 {   
     char* buffer{};
-    a.get_start(buffer);            //конструктор перемещения, оператор присваивания с перемещением
+    a.get_start(buffer);            
     out << buffer;
     delete []buffer;
     return out;

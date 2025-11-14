@@ -38,6 +38,7 @@ public:
     friend double Arg(const Complex_Number& z);
     friend const Complex_Number pow(const Complex_Number& z, int deg);
     friend const Complex_Number* root(const Complex_Number& a, int deg);
+    friend Complex_Number operator +(const double& lhs, const Complex_Number& rhs);
 };
 
 
