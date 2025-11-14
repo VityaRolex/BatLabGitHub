@@ -9,6 +9,7 @@ private:
     double y;
 
 public:
+    virtual void foo(){};
     Point2D(double x = 0, double y = 0);
     Point2D(const Point2D& other);
     Point2D(Point2D&& other) noexcept;
