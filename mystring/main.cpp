@@ -5,8 +5,8 @@ int main()
 {
     try
     {
-        Mystring a("aboba");
-        Mystring b("boba");
+        String a("aboba");
+        String b("boba");
         std::cout << (a <= b);
     }
     catch(const std::exception& e)
