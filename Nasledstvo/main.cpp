@@ -17,7 +17,6 @@ int main()
     {
         if (arr[i] != nullptr)
         {
-           
             if (dynamic_cast<Point3D*>(arr[i]) != nullptr)
             {
                 ++count3D;
@@ -26,8 +25,7 @@ int main()
             {
                 ++count2D;
             }
-        }
-        
+        }    
     }
     std::cout << count2D << ' ' << count3D;
     return 0;

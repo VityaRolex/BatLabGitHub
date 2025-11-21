@@ -1,50 +1,54 @@
-#ifndef MYSTRING_H
-#define MYSTRING_H
-#include<cstring>
-#include<iostream>
+#define _CRT_SECURE_NO_WARNINGS
+#ifndef STRING
+#define STRING
 
-class Mystring
+#include <iostream>
+#include <cstring>
+
+class String
 {
-    char* start;
-    size_t length;
+private:
+	char* str;
+	size_t length;
 public:
-Mystring(size_t length);
-Mystring();
-Mystring(const char* init)
-{
-    this->length = strlen(init);
-    this->start = new char[length + 1];
-    strcpy(this->start, init);
-}
-~Mystring()
-{
-    delete []this->start;               
-    this->start = nullptr;
-    this->length = 0;
-    //std::cout << "Mystring has been deleted";
-}
-Mystring(const Mystring& init)
-{
-    this->length = init.length;
-    this->start = new char[this->length + 1];
-    strcpy(this->start, init.start);
-}
-void get_start(char* buffer);
-size_t get_length();
-Mystring& operator =(const Mystring& init);
-const Mystring operator +(const Mystring& rhs);
-bool operator ==(const Mystring& rhs);
-int operator <=(const Mystring& rhs);
-const Mystring operator+(const char* rhs);
-size_t find_first_of(const Mystring& search);
-size_t find_first_not_of(const Mystring& search);
-Mystring reverse();
-size_t find_last_of(const Mystring& search);
-size_t find_last_not_of(const Mystring& search);
-Mystring operator +=(const Mystring& init);
-Mystring substr(size_t length, size_t start = 0);
+	const size_t npos = static_cast<size_t>(-1);
+	String();
+	String(const char*);
+	String(const String&);
+	~String();
+	String& operator=(const String&);
+	
+	String& append(const char* );
+	String& append(const String&);
+	size_t sizeT() const;
+	const char* c_str() const;
+	String substr(size_t);
+	String substr(size_t, size_t);
+	char* getStr() const;
+	int32_t getLength() const;
+	void setStr(String);
+	void setLength(int32_t);
+	String erase(size_t);
+	String erase(size_t, size_t);
+	size_t find(String) const;
+	String insert(size_t, String);
+	size_t find_first_of(String);
+	size_t find_last_of(String);
+
+
+	friend std::ostream& operator<<(std::ostream&, const String& );
+	friend String operator+(const String&, const String&);
+	bool operator==(const String) const; 
+	String& operator+=(const String&);
+	String& operator+=(const char*);
+	bool operator!=(const String) const;
+	bool operator<(const String)const;
+	bool operator>(const String&) const;
+	bool operator<=(const String&) const;
+	bool operator>=(const String&) const;
+	String& operator=(const String&);
+	String& operator=(const char*);
+
 };
 
-std::ostream& operator <<(std::ostream& out, Mystring& a);
-
-#endif
+#endif HEADER
