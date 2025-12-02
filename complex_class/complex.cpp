@@ -1,10 +1,5 @@
 #include"complex.h"
 
-Complex_Number operator +(const double& lhs, const Complex_Number& rhs)
-{
-    return Complex_Number(lhs) + rhs;
-}
-
 
 const Complex_Number* root(const Complex_Number& a, int deg)
 {
