@@ -10,6 +10,16 @@ Student::Student(const Student& o)
 : id(next_id++), name(o.name), course(o.course), group(o.group), recordBook(o.recordBook) {}
 
 
+Student::Student(Student&& other): id(other.id), name(other.name), course(other.course), group(other.group), recordBook(other.recordBook)
+{
+    *(const_cast<int*>(&other.id)) = 0;
+    other.name = "";
+    other.course = 0;
+    other.group = 0;
+    *(const_cast<int*>(&other.recordBook)) = 0;
+}
+
+
 std::ostream& operator<<(std::ostream& os, const Student& s){
 os << "ID=" << s.id << " Name=" << s.name
 << " Course=" << s.course << " Group=" << s.group

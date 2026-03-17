@@ -1,5 +1,5 @@
-#ifndef FOOTBALER_H
-#define FOOTBALER_H
+#ifndef MUSIC_H
+#define MUSIC_H
 
 
 #include<iostream>
@@ -17,53 +17,53 @@ char* copyStringToNewPlace(char* str)
     return newStr;
 }
 
-const enum Genre{Vratar, Zachitnik, demi_Zachitnik, Attacker, SAVE};
-class Footbaler{
+const enum Genre{Sing, Opera, Symphony, Other};
+class Music{
 private:
     
     const int id;
-    char* surname;
+    char* name;
     
-    const Genre spec;
+    const Genre genre;
     int contract_ending_age;
 public:
-    Footbaler(char* name = nullptr, Genre spec = Genre::SAVE, int ending = 0): id(next_id++), spec(spec), surname(copyStringToNewPlace(name)), contract_ending_age(ending){}
-    Footbaler(const Footbaler& rhs): id(next_id++), spec(spec), surname(copyStringToNewPlace(rhs.surname)), contract_ending_age(rhs.contract_ending_age){}
-    Footbaler(Footbaler&& rhs): id(rhs.id), spec(spec), surname(rhs.surname), contract_ending_age(rhs.contract_ending_age)
+    Music(char* name = nullptr, Genre genre = Genre::Other, int ending = 0): id(next_id++), genre(genre), name(copyStringToNewPlace(name)), contract_ending_age(ending){}
+    Music(const Music& rhs): id(next_id++), genre(genre), name(copyStringToNewPlace(rhs.name)), contract_ending_age(rhs.contract_ending_age){}
+    Music(Music&& rhs): id(rhs.id), genre(genre), name(rhs.name), contract_ending_age(rhs.contract_ending_age)
     {
         *(const_cast<int*>(&rhs.id)) = 0;
-        rhs.surname = nullptr;
+        rhs.name = nullptr;
         rhs.contract_ending_age = 0;
     }
-    Footbaler& operator = (const Footbaler& rhs)
+    Music& operator = (const Music& rhs)
     {
         if(this != &rhs)
         {
-            surname = copyStringToNewPlace(rhs.surname);
+            name = copyStringToNewPlace(rhs.name);
             contract_ending_age = rhs.contract_ending_age;
-            *(const_cast<Genre*>(&spec)) = rhs.spec;
+            *(const_cast<Genre*>(&genre)) = rhs.genre;
         }
         return *this;
     }
-    Footbaler& operator = (Footbaler&& rhs)
+    Music& operator = (Music&& rhs)
     {
         if(this != &rhs)
         {
-            surname = rhs.surname;
+            name = rhs.name;
             contract_ending_age = rhs.contract_ending_age;
             *(const_cast<int*>(&id)) = rhs.id;
-            *(const_cast<Genre*>(&spec)) = rhs.spec;
+            *(const_cast<Genre*>(&genre)) = rhs.genre;
             *(const_cast<int*>(&rhs.id)) = 0;
-            rhs.surname = nullptr;
-            *(const_cast<Genre*>(&rhs.spec)) = SAVE;
+            rhs.name = nullptr;
+            *(const_cast<Genre*>(&rhs.genre)) = Other;
             rhs.contract_ending_age = 0;
         }
         return *this;
     }
-    virtual ~Footbaler() = default;
+    virtual ~Music() = default;
     const char* getSurname()
     {
-        return copyStringToNewPlace(surname);
+        return copyStringToNewPlace(name);
     }
     const int getEndigDate()
     {
@@ -75,12 +75,12 @@ public:
     }
     const Genre getSpec()
     {
-        return spec;
+        return genre;
     }
     void setSurname(char* str)
     {
-        delete [] surname;
-        surname = copyStringToNewPlace(str);
+        delete [] name;
+        name = copyStringToNewPlace(str);
     }
     void setEndingDate(int date)
     {
@@ -88,11 +88,11 @@ public:
     }
     
 };
-    bool isSameSpec(Footbaler& lhs, Footbaler& rhs)
+    bool isSameSpec(Music& lhs, Music& rhs)
     {
         return lhs.getSpec() == rhs.getSpec();
     }
-    std::ostream& operator << (std::ostream& out, Footbaler& obj)
+    std::ostream& operator << (std::ostream& out, Music& obj)
     {
         out << "Surname -" << obj.getSurname() << " | id - " << obj.getId() << " | contract ending is in " << obj.getEndigDate() << "th year | specialization is - ";
         switch(obj.getSpec())

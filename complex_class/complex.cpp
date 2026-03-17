@@ -1,9 +1,9 @@
 #include"complex.h"
 
 
-const Complex_Number* root(const Complex_Number& a, int deg)
+ void root(const Complex_Number& a, int deg, Complex_Number* res)
 {
-    Complex_Number* res = new Complex_Number[deg];
+    res = new Complex_Number[deg];
     int counter{};
     double mod = std::pow(abs(a), 1.0/deg);
     double arg = Arg(a)/deg;
@@ -13,8 +13,8 @@ const Complex_Number* root(const Complex_Number& a, int deg)
         res[counter] = Complex_Number(mod*cos(arg + change*counter), mod*sin(arg + change*counter));
         ++counter;   
     }
-    return res;
 }
+
 std::ostream& operator <<(std::ostream& out, const Complex_Number& a)
 {
     if(a.rePart != 0 || a.imPart == 0)
@@ -48,7 +48,7 @@ double Arg(const Complex_Number& z)
 
 double abs(const Complex_Number& a)
 {
-    return std::pow((a.imPart * a.imPart) + (a.rePart * a.rePart), 0.5);
+    return std::sqrt((a.imPart * a.imPart) + (a.rePart * a.rePart));
 }
 
 
@@ -101,5 +101,38 @@ Complex_Number& Complex_Number::operator =(const Complex_Number& init)
         this->rePart = init.rePart;
         this->imPart = init.imPart;
     }
+    return *this;
+}
+
+Complex_Number& Complex_Number::operator++()
+{
+    this->rePart += 1;
+    return *this;
+}
+
+Complex_Number Complex_Number::operator++(int)
+{
+    Complex_Number temp(*this);
+    rePart += 1;
+    return temp;
+}
+
+Complex_Number& Complex_Number::operator--()
+{
+    this->rePart -= 1;
+    return *this;
+}
+
+Complex_Number Complex_Number::operator--(int)
+{
+    Complex_Number temp(*this);
+    rePart -= 1;
+    return temp;
+}
+
+Complex_Number& Complex_Number::operator+=(const Complex_Number& other)
+{
+    this->rePart += other.rePart;
+    this->imPart += other.imPart;
     return *this;
 }

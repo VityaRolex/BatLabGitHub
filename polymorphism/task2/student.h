@@ -15,6 +15,7 @@ const int recordBook;
 public:
 Student(const std::string& name, int course, int group, int recordBook);
 Student(const Student& other);
+Student(Student&&);
 virtual ~Student() = default;
 
 

@@ -1,20 +1,20 @@
 #ifndef FOOTBALER_IN_ARENDA_H
 #define FOOTBALER_IN_ARENDA_H
 
-#include "footbaler.h"
-class Footbaler_in_Arenda: public Footbaler{
+#include "music.h"
+class Footbaler_in_Arenda: public Music{
 private:
     int clubCount;
 public:
-    Footbaler_in_Arenda(char* name = nullptr, Genre spec = Genre::SAVE, int ending = 0, int clubs = 0): Footbaler(name, spec, ending), clubCount(clubs){}
-    Footbaler_in_Arenda(const Footbaler_in_Arenda& rhs): Footbaler(rhs), clubCount(rhs.clubCount){}
-    Footbaler_in_Arenda(Footbaler_in_Arenda&& rhs): Footbaler(rhs), clubCount(rhs.clubCount){rhs.clubCount = 0;}
+    Footbaler_in_Arenda(char* name = nullptr, Genre genre = Genre::SAVE, int ending = 0, int clubs = 0): Music(name, genre, ending), clubCount(clubs){}
+    Footbaler_in_Arenda(const Footbaler_in_Arenda& rhs): Music(rhs), clubCount(rhs.clubCount){}
+    Footbaler_in_Arenda(Footbaler_in_Arenda&& rhs): Music(rhs), clubCount(rhs.clubCount){rhs.clubCount = 0;}
     virtual ~Footbaler_in_Arenda() = default;
     Footbaler_in_Arenda& operator=(const Footbaler_in_Arenda& other) = delete;
     Footbaler_in_Arenda& operator=(const Footbaler_in_Arenda& other){
         if(this != &other)
         {
-            ((Footbaler)(*this)) = ((Footbaler)other);
+            ((Music)(*this)) = ((Music)other);
             clubCount = other.clubCount;
         }
         return *this;
@@ -30,7 +30,7 @@ public:
 };
 std::ostream& operator << (std::ostream& out, Footbaler_in_Arenda& obj)
 {
-    out << (Footbaler&)obj << " | club count - " << obj.getClubCount();
+    out << (Music&)obj << " | club count - " << obj.getClubCount();
 }
 
 

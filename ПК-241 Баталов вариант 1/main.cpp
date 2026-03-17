@@ -2,7 +2,7 @@
 
 int main() {
     std::cout << "=== Создание базового футболиста ===\n";
-    Footbaler f1((char*)"Ronaldo", Genre::Attacker, 2027);
+    Footbaler f1((char*)"Ronaldo", Spec::Attacker, 2027);
     std::cout << f1 << std::endl;
 
     std::cout << "\n=== Копирование футболиста (copy ctor) ===\n";
@@ -14,13 +14,13 @@ int main() {
     std::cout << f3 << std::endl;
 
     std::cout << "\n=== Работа operator= копирования ===\n";
-    Footbaler f4((char*)"Messi", Genre::Attacker, 2026);
+    Footbaler f4((char*)"Messi", Spec::Attacker, 2026);
     std::cout << "Было: " << f4 << std::endl;
     f4 = f1;
     std::cout << "Стало: " << f4 << std::endl;
 
     std::cout << "\n=== Работа operator= перемещения ===\n";
-    Footbaler f5((char*)"Buffon", Genre::Vratar, 2025);
+    Footbaler f5((char*)"Buffon", Spec::Vratar, 2025);
     std::cout << "Было: " << f5 << std::endl;
     f5 = std::move(f4);
     std::cout << "Стало: " << f5 << std::endl;
@@ -35,7 +35,7 @@ int main() {
               << (isSameSpec(f1, f3) ? "да" : "нет") << std::endl;
 
     std::cout << "\n=== Работа класса Footbaler_in_Arenda ===\n";
-    Footbaler_in_Arenda a1((char*)"Mbappe", Genre::Attacker, 2032, 5);
+    Footbaler_in_Arenda a1((char*)"Mbappe", Spec::Attacker, 2032, 5);
     std::cout << "Арендованный игрок: " << a1.getSurname()
               << ", клубов было: " << a1.getClubCount() << std::endl;
 

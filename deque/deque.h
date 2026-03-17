@@ -14,8 +14,9 @@ private:
         T* new_data = new T[new_cap];
 
         for (int i = 0; i < size_; ++i)
+        {
             new_data[i] = operator[](i);
-
+        }
         delete[] data;
 
         data = new_data;

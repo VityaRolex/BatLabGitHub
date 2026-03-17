@@ -67,7 +67,7 @@ void OutputAllStudents(Student * students, int size)
 
 int CompBySurname(const void * stud1, const void * stud2)
 {
-    return stricmp((((Student*)stud1)->surname).c_str(),(((Student*)stud2)->surname).c_str());
+    return strcmp((((Student*)stud1)->surname).c_str(),(((Student*)stud2)->surname).c_str());
 }
 
 void SortBySurname(Student * arr, int size)
