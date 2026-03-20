@@ -229,6 +229,137 @@ bool operator !=(Time& l, Time& r)
 }
 
 
+std::istream& operator >> (std::istream& in, Time& time)
+{
+    in >> time.hours;
+    in.ignore();
+    in >> time.minutes;
+    return in;
+}
+
+
+std::istream& operator >> (std::istream& in, Train& train)
+{
+    in >> train.number;
+    in.ignore();
+    getline(in, train.end, ';');
+    in.ignore();
+    std::string temp;
+    getline(in, temp, ';');
+    if(temp == "Passenger")
+    {
+        train.type = Type::Passenger;
+    }
+    else
+    {
+        train.type = Type::Fast;
+    }
+    in.ignore();
+    in >> train.starting_time;
+    in.ignore();
+    in >> train.in_road_time;
+    in.ignore();
+}
+
+std::ostream& operator << (std::ostream& out, Time& time)
+{
+    out << time.hours << ":" << time.minutes;
+}
+
+void inputFromFile(std::vector<Train>& v, std::ifstream& in)
+{
+    Train temp;
+    while(in.peek() != EOF)
+    {
+        in >> temp;
+        v.push_back(temp);
+    }
+}
+
+
+void sortByStartTime(std::vector<Train>& v)
+{
+    std::sort(v.begin(), v.end(), [](Train& a, Train& b){return a.starting_time < b.starting_time;});
+}
+
+std::ostream& operator << (std::ostream& out, Train& obj)
+{
+    out << "Number: " << obj.number << " Ending Station: "<< obj.end << " Train Type: " << (obj.type == Type::Passenger ? "Passenger" : "Fast") << " Starting Time: " << obj.starting_time << " In road time: " << obj.in_road_time << '\n';
+    
+}
+
+void outputTrainBehingTimes(std::vector<Train>& v, Time& left, Time& right)
+{
+    if (right < left)
+    {
+        throw std::runtime_error("d");
+    }
+    for (int i{}; i < v.size(); ++i)
+    {
+        if (left < v.at(i).starting_time && v.at(i).starting_time < right)
+        {
+            std::cout << v.at(i);
+        }
+    }
+}
+
+
+void outputTrainsInSameEnd(std::vector<Train>& v, std::string& end)
+{
+    for (int i{}; i < v.size(); ++i)
+    {
+        if (v.at(i).end == end)
+        {
+            std::cout << v.at(i);
+        }
+    }
+}
+
+
+void outputTrainsInSameEnd(std::vector<Train>& v, std::string& end)
+{
+    for (int i{}; i < v.size(); ++i)
+    {
+        if (v.at(i).end == end && v.at(i).type == Type::Fast)
+        {
+            std::cout << v.at(i);
+        }
+    }
+}
+
+
+Train& searchFastestTrainInCertainEnd(std::vector<Train>& v, std::string& end)
+{
+    int res_idx{-5};
+    int i{};
+    Time temp{0,0};
+    Time minTime{0,0};
+    while(i < v.size() && res_idx == -5)
+    {
+        if(v.at(i).end == end)
+        {
+            res_idx = i;
+            minTime = v.at(i).starting_time;
+            minTime.minutes += v.at(i).in_road_time;
+            optimizeTime(minTime);
+        }
+        ++i;
+    }
+    while(i < v.size())
+    {
+        temp = v.at(i).starting_time;
+        temp.minutes += v.at(i).in_road_time;
+        optimizeTime(temp);
+
+        if (v.at(i).end == end && temp < minTime)
+        {
+            res_idx = i;
+            minTime = temp;
+        }
+        ++i;
+    }
+    return v.at(res_idx);
+}
 
 
 
