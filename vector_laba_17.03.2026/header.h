@@ -2,6 +2,7 @@
 #define FUNCS_H
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <exception>
 #include <limits>
@@ -20,7 +21,8 @@ void deleteAllEqualOnModuleSaufFirst(std::vector<int>&);
 void task2(std::vector<int>&);
 
 
-void readStrings(std::vector<std::string>&, std::ifstream&);
+void openStream(std::ifstream&, const char*);
+void readStringsFromFile(std::vector<std::string>&, std::ifstream&);
 void sortVector(std::vector<std::string>&);
 void printVector(std::vector<std::string>&);
 void printOnLetter(std::vector<std::string>&, char);
@@ -48,7 +50,7 @@ bool operator <=(Time&, Time&);
 bool operator !=(Time&, Time&);
 
 
-enum Type{Passenger, Fast, SAVE};
+enum Type{Passenger, Fast};
 
 struct Train{
     uint number;

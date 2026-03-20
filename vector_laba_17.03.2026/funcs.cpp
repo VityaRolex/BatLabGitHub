@@ -131,6 +131,104 @@ void deleteAllEqualOnModuleSaufFirst(std::vector<int>& v)
 }
 
 
+void openStream(std::ifstream& in, const char* name)
+{
+    in.close();
+    in.open(name, std::ios::in);
+    if(!in.is_open())
+    {
+        throw std::runtime_error("b");
+    }
+    if(in.peek() == EOF)
+    {
+        throw std::runtime_error("c");
+    }
+}
+
+
+void readStringsFromFile(std::vector<std::string>& v, std::ifstream& in)
+{
+    std::string temp{};
+    while(in.peek() != EOF)
+    {
+        std::getline(in, temp);
+        v.push_back(temp);
+    }
+}
+
+
+void sortVector(std::vector<std::string>& v)
+{
+   
+}
+
+
+void printVector(std::vector<std::string>& v)
+{
+    for(int i{}; i < v.size(); ++i)
+    {
+        std::cout << v.at(i) << '\n';
+    }
+}
+
+
+void printOnLetter(std::vector<std::string>& v, char c)
+{
+    for(int i{}; i < v.size(); ++i)
+    {
+        if(v.at(i)[0] == c)
+        {
+            std::cout << v.at(i) << '\n';
+        }
+    }
+}
+
+
+void deleteOnLetter(std::vector<std::string>& v, char c)
+{
+    for(int i{}; i < v.size(); ++i)
+    {
+        if(v.at(i)[0] == c)
+        {
+            v.erase(v.begin() + i);
+            --i;
+        }
+    }
+}
+
+
+bool operator <(Time& left, Time& right)
+{
+    if (left.hours > right.hours)
+    {
+        return true;
+    }
+    if (left.hours == right.hours && left.minutes < right.minutes)
+    {
+        return true;
+    }
+    return false;
+}
+
+
+bool operator ==(Time& l, Time& r)
+{
+    return (r.hours == l.hours && r.minutes == l.minutes);
+}
+
+
+bool operator <=(Time& l, Time& r)
+{
+    return (l < r || l == r);
+}
+
+
+bool operator !=(Time& l, Time& r)
+{
+    return !(l == r);
+}
+
+
 
 
 
