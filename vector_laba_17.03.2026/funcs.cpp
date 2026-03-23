@@ -70,7 +70,7 @@ int countSumFromAToB(std::vector<int>& v, size_t A, size_t B)
     {
         throw std::runtime_error("a");
     }
-    for (int i{A}; i < B; ++i)
+    for (size_t i{A}; i < B; ++i)
     {
         res += v.at(i);
     }
@@ -176,7 +176,7 @@ void printOnLetter(std::vector<std::string>& v, char c)
 {
     for(int i{}; i < v.size(); ++i)
     {
-        if(v.at(i)[0] == c)
+        if(v.at(i)[0] == std::toupper(c) || v.at(i)[0] == std::tolower(c))
         {
             std::cout << v.at(i) << '\n';
         }
@@ -188,7 +188,7 @@ void deleteOnLetter(std::vector<std::string>& v, char c)
 {
     for(int i{}; i < v.size(); ++i)
     {
-        if(v.at(i)[0] == c)
+        if(v.at(i)[0] == std::toupper(c) || v.at(i)[0] == std::tolower(c))
         {
             v.erase(v.begin() + i);
             --i;
@@ -254,16 +254,26 @@ std::istream& operator >> (std::istream& in, Train& train)
     {
         train.type = Type::Fast;
     }
-    in.ignore();
     in >> train.starting_time;
     in.ignore();
     in >> train.in_road_time;
     in.ignore();
+    return in;
+}
+
+void optimizeTime(Time& time)
+{
+    while(time.minutes >= 60)
+    {
+        ++time.hours;
+        time.minutes -= 60;
+    }
 }
 
 std::ostream& operator << (std::ostream& out, Time& time)
 {
     out << time.hours << ":" << time.minutes;
+    return out;
 }
 
 void inputFromFile(std::vector<Train>& v, std::ifstream& in)
@@ -285,7 +295,7 @@ void sortByStartTime(std::vector<Train>& v)
 std::ostream& operator << (std::ostream& out, Train& obj)
 {
     out << "Number: " << obj.number << " Ending Station: "<< obj.end << " Train Type: " << (obj.type == Type::Passenger ? "Passenger" : "Fast") << " Starting Time: " << obj.starting_time << " In road time: " << obj.in_road_time << '\n';
-    
+    return out;
 }
 
 void outputTrainBehingTimes(std::vector<Train>& v, Time& left, Time& right)
@@ -316,7 +326,7 @@ void outputTrainsInSameEnd(std::vector<Train>& v, std::string& end)
 }
 
 
-void outputTrainsInSameEnd(std::vector<Train>& v, std::string& end)
+void outputFastTrainsInSameEnd(std::vector<Train>& v, std::string& end)
 {
     for (int i{}; i < v.size(); ++i)
     {
