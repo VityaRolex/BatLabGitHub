@@ -159,7 +159,7 @@ void readStringsFromFile(std::vector<std::string>& v, std::ifstream& in)
 
 void sortVector(std::vector<std::string>& v)
 {
-   
+   std::sort(v.begin(), v.end(), [](std::string& a, std::string& b){return a < b;});
 }
 
 
@@ -368,8 +368,90 @@ Train& searchFastestTrainInCertainEnd(std::vector<Train>& v, std::string& end)
         }
         ++i;
     }
+    if (res_idx == -5)
+    {
+        throw std::runtime_error("c");
+    }
     return v.at(res_idx);
 }
 
 
+size_t countNumsCondition(std::vector<int>& v, bool(cond)(int))
+{
+    size_t res{};
+    for (int i{}; i < v.size(); ++i)
+    {
+        if (cond(v.at(i)))
+        {
+            ++res;
+        }
+    }
+    return res;
+}
 
+bool condition(int a)
+{
+    return a > 5;
+}
+
+void task2(std::vector<int>& v)
+{
+    int n{};
+    int a{};
+    int b{};
+    inputVector(v, std::cin);
+    std::cout << "Sum " << countSum(v) << '\n';
+    std::cout << "Input number ";
+    std::cin >> n;
+    std::cout << "\n Equal to " << n << " - " << countNumsEqualTo(v, n) << '\n';
+    std::cout << "In condition - " << countNumsCondition(v, condition) << '\n';
+    changeZerosToAverage(v);
+    std::cout << v;
+    std::cout << "input left and right\n";
+    std::cin >> a >> b;
+    addToEveryElementOfVectorSumOfVectorFromAToB(v, a, b);
+    std::cout << v;
+    changeEvenToMaxMinusMin(v);
+    std::cout << v;
+    deleteAllEqualOnModuleSaufFirst(v);
+    std::cout << v;
+}
+
+
+void task3(std::vector<std::string>& v)
+{
+    char c{};
+    std::ifstream fin;
+    openStream(fin, "strings.txt");
+    sortVector(v);
+    std::cout << v;
+    std::cout << "input letter\n";
+    std::cin >> c;
+    printOnLetter(v, c);
+    deleteOnLetter(v, c);
+    std::cout << v;
+}
+
+
+void task4(std::vector<Train>& v)
+{
+    Time left;
+    Time right;
+    std::string end;
+    std::ifstream fin;
+    openStream(fin, "trains.txt");
+    inputFromFile(v, fin);
+    sortByStartTime(v);
+    std::cout << v;
+    std::cout << "input left and right\n";
+    std::cin >> left >> right;
+    outputTrainBehingTimes(v, left, right);
+    std::cout << "input end\n";
+    std::cin >> end;
+    outputTrainsInSameEnd(v, end);
+    std::cout << '\n';
+    outputFastTrainsInSameEnd(v, end);
+    std::cout << '\n';
+    std::cout << searchFastestTrainInCertainEnd(v, end);
+
+}

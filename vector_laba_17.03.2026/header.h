@@ -10,10 +10,24 @@
 #include <algorithm>
 #include<cctype>
 
+template<typename T>
+std::ostream& operator << (std::ostream& out, std::vector<T>& v)
+{
+    for (int i{}; i < v.size(); ++i)
+    {
+        out << v.at(i) << ' ';
+    }
+    std::cout << '\b' << '\n';
+    return out;
+}
+
+
 void inputVector(std::vector<int>&, std::istream&);
 void clearInput(std::istream&);
 int countSum(std::vector<int>&);
 size_t countNumsEqualTo(std::vector<int>&, int n);
+bool condition(int);
+size_t countNumsCondition(std::vector<int>&, bool(*)(int));
 int countAverage(std::vector<int>&);
 void changeZerosToAverage(std::vector<int>&);
 int countSumFromAToB(std::vector<int>&, size_t, size_t);
