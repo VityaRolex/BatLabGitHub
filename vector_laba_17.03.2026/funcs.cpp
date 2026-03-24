@@ -9,6 +9,7 @@ void inputVector(std::vector<int>& v, std::istream& in)
     {
         v.push_back(buffer);
     }
+    clearInput(in);
 }
 
 
