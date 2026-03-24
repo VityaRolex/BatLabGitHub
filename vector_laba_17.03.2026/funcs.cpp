@@ -234,6 +234,10 @@ std::istream& operator >> (std::istream& in, Time& time)
     in >> time.hours;
     in.ignore();
     in >> time.minutes;
+    if(time.hours >= 24 || time.minutes >= 60)
+    {
+        throw std::runtime_error("invalid time");
+    }
     return in;
 }
 
@@ -400,6 +404,10 @@ void task2(std::vector<int>& v)
     int a{};
     int b{};
     inputVector(v, std::cin);
+    if (v.empty())
+    {
+        throw std::runtime_error("f");
+    }
     std::cout << "Sum " << countSum(v) << '\n';
     std::cout << "Input number ";
     std::cin >> n;
@@ -423,6 +431,11 @@ void task3(std::vector<std::string>& v)
     char c{};
     std::ifstream fin;
     openStream(fin, "strings.txt");
+    readStringsFromFile(v, fin);
+    if (v.empty())
+    {
+        throw std::runtime_error("f");
+    }
     sortVector(v);
     std::cout << v;
     std::cout << "input letter\n";
@@ -441,6 +454,10 @@ void task4(std::vector<Train>& v)
     std::ifstream fin;
     openStream(fin, "trains.txt");
     inputFromFile(v, fin);
+    if (v.empty())
+    {
+        throw std::runtime_error("f");
+    }
     sortByStartTime(v);
     std::cout << v;
     std::cout << "input left and right\n";

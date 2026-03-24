@@ -82,4 +82,5 @@ void outputTrainBehingTimes(std::vector<Train>&, Time&, Time&);
 void outputTrainsInSameEnd(std::vector<Train>&, std::string&);
 void outputFastTrainsInSameEnd(std::vector<Train>&, std::string&);
 Train& searchFastestTrainInCertainEnd(std::vector<Train>&, std::string&);
+void task4(std::vector<Train>&);
 #endif
